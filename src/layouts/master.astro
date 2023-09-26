@@ -1,0 +1,117 @@
+---
+import iconInstagram from "../icons/instagram.svg?raw";
+import iconYoutube from "../icons/youtube.svg?raw";
+import iconTwitter from "../icons/twitter.svg?raw";
+import iconFacebook from "../icons/facebook.svg?raw";
+import iconMail from "../icons/email.svg?raw";
+
+interface Props {
+  title: string;
+  description: string;
+}
+
+const { title, description } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en" class="text-gray-300 bg-zinc-900">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+  </head>
+  <body>
+    <div class="container flex mx-auto">
+      <header class="flex-grow max-w-xs h-screen py-10">
+        <a href="https://elephant-art-film.com/">
+          <img
+            src="/assets/brand/elephant-official-square.webp"
+            alt="ELEPHANT art film productions"
+            class="rounded-full w-48 mx-auto"
+          />
+        </a>
+        <nav class="w-full py-8 font-semibold text-lg">
+          <a href="">
+            <div class="text-center py-3 hover:bg-zinc-800">HOME</div>
+          </a>
+          <a href="">
+            <div class="text-center py-3 hover:bg-zinc-800">FILMS</div>
+          </a>
+          <a href="">
+            <div class="text-center py-3 hover:bg-zinc-800">NEWS</div>
+          </a>
+          <a href="">
+            <div class="text-center py-3 hover:bg-zinc-800">ABOUT US</div>
+          </a>
+        </nav>
+        <div class="flex w-full py-4 justify-center fill-white">
+          <a
+            href="https://www.instagram.com/elephantartfilm"
+            target="_blank"
+            class="mx-2 w-7 hover:brightness-75"
+          >
+            <Fragment set:html={iconInstagram} />
+          </a>
+          <a
+            href="https://www.youtube.com/@elephantartfilm"
+            target="_blank"
+            class="mx-2 w-7 hover:brightness-75"
+          >
+            <Fragment set:html={iconYoutube} />
+          </a>
+          <a
+            href="https://twitter.com/ElephantArtFilm"
+            target="_blank"
+            class="mx-2 w-7 hover:brightness-75"
+          >
+            <Fragment set:html={iconTwitter} />
+          </a>
+          <a
+            href="https://www.facebook.com/elephantartfilm"
+            target="_blank"
+            class="mx-2 w-7 hover:brightness-75"
+          >
+            <Fragment set:html={iconFacebook} />
+          </a>
+          <a
+            href="mailto:elephantartfilm@gmail.com"
+            class="mx-2 w-7 hover:brightness-75"
+          >
+            <Fragment set:html={iconMail} />
+          </a>
+        </div>
+      </header>
+      <div class="flex-grow ml-6">
+        <main>
+          <slot />
+        </main>
+        <footer class="text-center font-bold my-8">
+          Copyright &copy; 2023 ELEPHANT art film production
+        </footer>
+      </div>
+    </div>
+  </body>
+</html>
+
+<style is:global>
+  html {
+    /* font-family: system-ui, sans-serif; */
+    background: #13151a;
+  }
+
+  code {
+    font-family:
+      Menlo,
+      Monaco,
+      Lucida Console,
+      Liberation Mono,
+      DejaVu Sans Mono,
+      Bitstream Vera Sans Mono,
+      Courier New,
+      monospace;
+  }
+</style>
