@@ -1,0 +1,19 @@
+---
+import { getCollection } from 'astro:content';
+
+const articles = await getCollection('news');
+
+const truncateContent = (content: string) => {
+	return content.length < 128 ? content : content.slice(0, 127) + '...';
+};
+---
+
+{
+	articles.map((article) => (
+		<article>
+			<h2>{article.data.title}</h2>
+			<time datetime={article.data.publishDate.toISOString()}>{article.data.publishDate.toLocaleDateString()}</time>
+			<p>{truncateContent(article.body)}</p>
+		</article>
+	))
+}

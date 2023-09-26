@@ -1,0 +1,29 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { getCollection, getEntry } from 'astro:content';
+
+export const getStaticPaths = (async () => {
+	const articles = await getCollection('news');
+	return articles.map((article) => {
+		return {
+			params: {
+				slug: article.slug,
+			},
+		};
+	});
+}) satisfies GetStaticPaths;
+
+const { slug } = Astro.params;
+if (!slug) throw new Error('Missing slug');
+
+const article = await getEntry<'news', string>('news', slug);
+if (!article) throw new Error('Missing article');
+
+const { Content } = await article.render();
+---
+
+<article>
+	<h1>{article.data.title}</h1>
+	<time datetime={article.data.publishDate.toISOString()}>{article.data.publishDate.toLocaleDateString()}</time>
+	<Content />
+</article>
