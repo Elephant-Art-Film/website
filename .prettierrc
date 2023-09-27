@@ -1,0 +1,19 @@
+{
+  "trailingComma": "es5",
+  "printWidth": 120,
+  "tabWidth": 2,
+  "useTabs": false,
+  "semi": true,
+  "singleQuote": true,
+  "bracketSpacing": true,
+  "arrowParens": "always",
+  "overrides": [
+    {
+      "files": "*.{html,astro}",
+      "options": {
+        "tabWidth": 4,
+        "useTabs": true
+      }
+    }
+  ]
+}

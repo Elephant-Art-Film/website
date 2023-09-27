@@ -1,6 +1,8 @@
 ---
 title: 'Celebrating the Wrap of Our Short Films: A Heartfelt Thank You'
 publishDate: 2023-07-07
+image: 'https://elephantartfilm.files.wordpress.com/2023/07/dscf0357.jpg'
+description: "We would like to announce that our shooting of two new short films is complete."
 ---
 
 We would like to annouce that our shooting of two new short films is complete. As the final clapperboard falls and the cameras stop rolling, we find ourselves filled with an overwhelming sense of gratitude and accomplishment.

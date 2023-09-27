@@ -2,22 +2,25 @@
 import { getCollection } from 'astro:content';
 
 import MasterLayout from '../../layouts/master.astro';
+import NewsCard from '../../components/NewsCard.astro';
 
-const articles = (await getCollection('news')).sort((a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime());
-
-const truncateContent = (content: string) => {
-	return content.length < 128 ? content : content.slice(0, 127) + '...';
-};
+const articles = (await getCollection('news')).sort(
+	(a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime()
+);
 ---
 
 <MasterLayout title="ELEPHANT | News" description="">
-	{
-		articles.map((article) => (
-			<article>
-				<h2>{article.data.title}</h2>
-				<time datetime={article.data.publishDate.toISOString()}>{article.data.publishDate.toLocaleDateString()}</time>
-				<p>{truncateContent(article.body)}</p>
-			</article>
-		))
-	}
+	<div class="mx-48">
+		{
+			articles.map((article) => (
+				<NewsCard
+					title={article.data.title}
+					slug={article.slug}
+					publishDate={article.data.publishDate}
+					image={{ src: article.data.image || '', alt: article.data.title }}
+					description={article.data.description}
+				/>
+			))
+		}
+	</div>
 </MasterLayout>

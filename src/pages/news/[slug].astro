@@ -7,11 +7,7 @@ import MasterLayout from '../../layouts/master.astro';
 export const getStaticPaths = (async () => {
 	const articles = await getCollection('news');
 	return articles.map((article) => {
-		return {
-			params: {
-				slug: article.slug,
-			},
-		};
+		return { params: { slug: article.slug } };
 	});
 }) satisfies GetStaticPaths;
 

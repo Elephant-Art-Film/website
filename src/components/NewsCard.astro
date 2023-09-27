@@ -1,0 +1,27 @@
+---
+interface Props {
+	title: string;
+	slug: string;
+	publishDate: Date;
+	image: {
+		src: string;
+		alt: string;
+	};
+	description: string;
+}
+
+const { title, slug, publishDate, image, description } = Astro.props;
+---
+
+<article class="py-4">
+	<a href={`/news/${slug}`} class="flex gap-4">
+		<img src={image.src} alt={image.alt} class="h-48 w-72 object-cover" />
+		<div class="flex-grow">
+			<h1 class="text-xl font-bold">{title}</h1>
+			<time datetime={publishDate.toISOString()} class="text-sm">
+				{publishDate.toLocaleDateString()}
+			</time>
+			<p class="mt-2">{description}</p>
+		</div>
+	</a>
+</article>
