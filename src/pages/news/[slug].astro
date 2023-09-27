@@ -2,6 +2,8 @@
 import type { GetStaticPaths } from 'astro';
 import { getCollection, getEntry } from 'astro:content';
 
+import MasterLayout from '../../layouts/master.astro';
+
 export const getStaticPaths = (async () => {
 	const articles = await getCollection('news');
 	return articles.map((article) => {
@@ -22,8 +24,10 @@ if (!article) throw new Error('Missing article');
 const { Content } = await article.render();
 ---
 
-<article>
-	<h1>{article.data.title}</h1>
-	<time datetime={article.data.publishDate.toISOString()}>{article.data.publishDate.toLocaleDateString()}</time>
-	<Content />
-</article>
+<MasterLayout title={`ELEPHANT | ${article.data.title}`} description="">
+	<article>
+		<h1>{article.data.title}</h1>
+		<time datetime={article.data.publishDate.toISOString()}>{article.data.publishDate.toLocaleDateString()}</time>
+		<Content />
+	</article>
+</MasterLayout>
