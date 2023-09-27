@@ -1,7 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 
-const articles = await getCollection('news');
+const articles = (await getCollection('news')).sort((a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime());
 
 const truncateContent = (content: string) => {
 	return content.length < 128 ? content : content.slice(0, 127) + '...';
