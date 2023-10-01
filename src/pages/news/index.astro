@@ -10,17 +10,15 @@ const articles = (await getCollection('news')).sort(
 ---
 
 <MasterLayout title="ELEPHANT | News" description="">
-	<div class="mx-48">
-		{
-			articles.map((article) => (
-				<NewsCard
-					title={article.data.title}
-					slug={article.slug}
-					publishDate={article.data.publishDate}
-					image={{ src: article.data.image || '', alt: article.data.title }}
-					description={article.data.description}
-				/>
-			))
-		}
-	</div>
+	{
+		articles.map((article) => (
+			<NewsCard
+				title={article.data.title}
+				slug={article.slug}
+				publishDate={article.data.publishDate}
+				image={{ src: article.data.image || '', alt: article.data.title }}
+				description={article.data.description}
+			/>
+		))
+	}
 </MasterLayout>

@@ -1,0 +1,39 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { getCollection, getEntry } from 'astro:content';
+
+import MasterLayout from '../../layouts/master.astro';
+import iconIMDb from '../../icons/imdb.svg?raw';
+
+export const getStaticPaths = (async () => {
+	const films = await getCollection('films');
+	return films.map((film) => {
+		return { params: { slug: film.slug } };
+	});
+}) satisfies GetStaticPaths;
+
+const { slug } = Astro.params;
+if (!slug) throw new Error('Missing slug');
+
+const film = await getEntry<'films', string>('films', slug);
+if (!film) throw new Error('Missing film');
+
+const { Content } = await film.render();
+---
+
+<MasterLayout title={`ELEPHANT | ${film.data.title}`} description="">
+	<img src={film.data.cover} alt={film.data.title} />
+	<h1>{film.data.title}</h1>
+	<div>{film.data.genre.join(' · ')}</div>
+	<div>
+		{film.data.year} · {film.data.runtime} · {film.data.aspectRatio} · {film.data.color} · {film.data.soundFormat}
+	</div>
+	{
+		film.data.imdbId && (
+			<a href={`https://www.imdb.com/title/${film.data.imdbId}/`} target="_blank" class="inline-block">
+				<Fragment set:html={iconIMDb} />
+			</a>
+		)
+	}
+	<Content />
+</MasterLayout>
