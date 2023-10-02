@@ -2,17 +2,17 @@
 import type { GetStaticPaths } from 'astro';
 import { getCollection, getEntry } from 'astro:content';
 
-import MasterLayout from '../../layouts/master.astro';
-import iconIMDb from '../../icons/imdb.svg?raw';
+import MasterLayout from '../layouts/master.astro';
+import iconIMDb from '../icons/imdb.svg?raw';
 
 export const getStaticPaths = (async () => {
 	const films = await getCollection('films');
 	return films.map((film) => {
-		return { params: { slug: film.slug } };
+		return { params: { film: film.slug } };
 	});
 }) satisfies GetStaticPaths;
 
-const { slug } = Astro.params;
+const { film: slug } = Astro.params;
 if (!slug) throw new Error('Missing slug');
 
 const film = await getEntry<'films', string>('films', slug);
