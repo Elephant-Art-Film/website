@@ -22,8 +22,20 @@ const { Content } = await article.render();
 
 <MasterLayout title={`ELEPHANT | ${article.data.title}`} description="">
 	<article>
-		<h1>{article.data.title}</h1>
-		<time datetime={article.data.publishDate.toISOString()}>{article.data.publishDate.toLocaleDateString()}</time>
-		<Content />
+		<h1 class="text-4xl font-montserrat mb-4">{article.data.title}</h1>
+		<time datetime={article.data.publishDate.toISOString()} class="text-lg font-montserrat">
+			{article.data.publishDate.toLocaleDateString()}
+		</time>
+		<div class="my-8">
+			<Content />
+		</div>
 	</article>
 </MasterLayout>
+
+<style is:global>
+	p {
+		line-height: 1.75rem;
+		font-size: 1.125rem;
+		margin-bottom: 1.25rem !important;
+	}
+</style>
