@@ -37,7 +37,10 @@ const { Content } = await film.render();
 			</a>
 		)
 	}
-	<Content />
+
+	<article class="prose-lg lg:prose-xl mt-4 mb-8">
+		<Content />
+	</article>
 
 	{
 		film.data.trailer && (
