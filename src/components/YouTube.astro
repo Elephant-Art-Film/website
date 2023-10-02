@@ -1,0 +1,17 @@
+---
+interface Props {
+	id: string;
+	class?: string;
+}
+
+const { id, ...attr } = Astro.props;
+
+import 'lite-youtube-embed/src/lite-yt-embed.css';
+---
+
+<lite-youtube videoid={id} style={`background-image: url('https://i.ytimg.com/vi/${id}/hqdefault.jpg');`} {...attr}>
+</lite-youtube>
+
+<script>
+	import 'lite-youtube-embed';
+</script>

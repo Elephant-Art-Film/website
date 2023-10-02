@@ -3,6 +3,8 @@ import type { GetStaticPaths } from 'astro';
 import { getCollection, getEntry } from 'astro:content';
 
 import MasterLayout from '@layouts/master.astro';
+import YouTube from '@components/YouTube.astro';
+
 import iconIMDb from '@icons/imdb.svg?raw';
 
 export const getStaticPaths = (async () => {
@@ -36,4 +38,24 @@ const { Content } = await film.render();
 		)
 	}
 	<Content />
+
+	{
+		film.data.trailer && (
+			<>
+				<h2>Trailer</h2>
+				<YouTube id={film.data.trailer} class="mx-auto my-6" />
+			</>
+		)
+	}
+
+	{
+		film.data.teasers && (
+			<>
+				<h2>Teasers</h2>
+				{film.data.teasers?.map((teaser) => (
+					<YouTube id={teaser} class="mx-auto my-6" />
+				))}
+			</>
+		)
+	}
 </MasterLayout>
