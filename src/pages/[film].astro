@@ -2,8 +2,8 @@
 import type { GetStaticPaths } from 'astro';
 import { getCollection, getEntry } from 'astro:content';
 
-import MasterLayout from '../layouts/master.astro';
-import iconIMDb from '../icons/imdb.svg?raw';
+import MasterLayout from '@layouts/master.astro';
+import iconIMDb from '@icons/imdb.svg?raw';
 
 export const getStaticPaths = (async () => {
 	const films = await getCollection('films');

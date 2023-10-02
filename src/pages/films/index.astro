@@ -1,7 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 
-import MasterLayout from '../../layouts/master.astro';
+import MasterLayout from '@layouts/master.astro';
 
 const films = (await getCollection('films')).sort((a, b) => b.data.year - a.data.year);
 ---

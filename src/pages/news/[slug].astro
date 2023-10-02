@@ -2,7 +2,7 @@
 import type { GetStaticPaths } from 'astro';
 import { getCollection, getEntry } from 'astro:content';
 
-import MasterLayout from '../../layouts/master.astro';
+import MasterLayout from '@layouts/master.astro';
 
 export const getStaticPaths = (async () => {
 	const articles = await getCollection('news');
