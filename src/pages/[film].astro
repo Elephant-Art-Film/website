@@ -3,7 +3,7 @@ import type { GetStaticPaths } from 'astro';
 import { getCollection, getEntry } from 'astro:content';
 
 import MasterLayout from '@layouts/master.astro';
-import YouTube from '@components/YouTube.astro';
+import UnorderedList from '@components/UnorderedList.astro';
 
 import iconIMDb from '@icons/imdb.svg?raw';
 
@@ -25,40 +25,24 @@ const { Content } = await film.render();
 
 <MasterLayout title={`ELEPHANT | ${film.data.title}`} description="">
 	<img src={film.data.cover} alt={film.data.title} />
-	<h1>{film.data.title}</h1>
-	<div>{film.data.genre.join(' · ')}</div>
-	<div>
+	<h1 class="text-4xl font-montserrat my-4">{film.data.title}</h1>
+	<div class="text-md font-montserrat my-1">{film.data.genre.join(' · ')}</div>
+	<div class="text-md font-montserrat my-1">
 		{film.data.year} · {film.data.runtime} · {film.data.aspectRatio} · {film.data.color} · {film.data.soundFormat}
 	</div>
 	{
 		film.data.imdbId && (
-			<a href={`https://www.imdb.com/title/${film.data.imdbId}/`} target="_blank" class="inline-block">
+			<a
+				href={`https://www.imdb.com/title/${film.data.imdbId}/`}
+				target="_blank"
+				class="inline-block float-right -mt-12"
+			>
 				<Fragment set:html={iconIMDb} />
 			</a>
 		)
 	}
 
-	<article class="prose-lg lg:prose-xl mt-4 mb-8">
-		<Content />
+	<article class="prose-lg lg:prose-xl my-8">
+		<Content components={{ ul: UnorderedList }} />
 	</article>
-
-	{
-		film.data.trailer && (
-			<>
-				<h2>Trailer</h2>
-				<YouTube id={film.data.trailer} class="mx-auto my-6" />
-			</>
-		)
-	}
-
-	{
-		film.data.teasers && (
-			<>
-				<h2>Teasers</h2>
-				{film.data.teasers?.map((teaser) => (
-					<YouTube id={teaser} class="mx-auto my-6" />
-				))}
-			</>
-		)
-	}
 </MasterLayout>

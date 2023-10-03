@@ -1,0 +1,33 @@
+---
+title: "Klara's Dance"
+year: 2023
+cover: 'https://elephantartfilm.files.wordpress.com/2023/02/untitled_2.1.2.png'
+poster: 'https://elephantartfilm.files.wordpress.com/2023/03/poster-iv.9.jpg'
+genre: ['SHORT', 'FICTION']
+runtime: '30 min'
+aspectRatio: '1.85:1'
+color: 'black and white'
+soundFormat: '5.1'
+imdbId: 'tt27121756'
+trailer: 'qxEyeTDeo6g'
+teasers: ['fburZGYR9SM', 'cGTGUf5WiEM', 'crCt5Dh65_U', 'ptvGslLPUrQ', 'myv3sDY8Jwg']
+---
+
+import YouTube from '@components/YouTube.astro';
+
+Distressed at an unexpected news, Klara keeps it a secret from her boyfriend thereby risking their relationship.
+
+<h2>Trailer</h2>
+<YouTube id={frontmatter.trailer} class="mx-auto my-6" />
+
+<h2>Teasers</h2>
+{frontmatter.teasers.map((id) => (
+  <YouTube id={id} class="mx-auto my-6" />
+))}
+
+<h2>Stills</h2>
+
+<h2>Awards</h2>
+
+- Festival neodvisnega filma Slovenije – Official Selection
+- Direct Monthly Online Film Festival – Official Selection
