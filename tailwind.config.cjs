@@ -10,6 +10,7 @@ module.exports = {
 				'1/4': '25%',
 			},
 			fontFamily: {
+				'sans': ['Montserrat', ...defaultTheme.fontFamily.sans],
 				'montserrat': ['Montserrat', ...defaultTheme.fontFamily.sans],
 			}
 		},
