@@ -10,7 +10,6 @@ color: 'color'
 soundFormat: '5.1'
 imdbId: 'tt23671946'
 trailer: 'FVvhjHClV3w'
-teasers: ['LRFT5L0zzoY', 'Sr1D1FAxfDc', 'yJDoFcWgqwA']
 ---
 
 import YouTube from '@components/YouTube.astro';
@@ -20,10 +19,6 @@ While David is facing a crisis in his current relationship, a phone call about h
 <h2>Trailer</h2>
 <YouTube id={frontmatter.trailer} class="mx-auto my-6" />
 
-<h2>Teasers</h2>
-{frontmatter.teasers.map((id) => (
-  <YouTube id={id} class="mx-auto my-6" />
-))}
 
 <h2>Stills</h2>
 
