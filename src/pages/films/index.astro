@@ -2,11 +2,12 @@
 import { getCollection } from 'astro:content';
 
 import MasterLayout from '@layouts/master.astro';
+import FilmCard from '@components/FilmCard.astro';
 
 const films = (await getCollection('films')).sort((a, b) => b.data.year - a.data.year);
 ---
 
 <MasterLayout title="ELEPHANT | News" description="">
-	<h1>Films</h1>
-	{films.map((film) => <div />)}
+	<h1 class="text-4xl font-bold mb-6">Films</h1>
+	{films.map((film) => <FilmCard slug={film.slug} film={film.data} />)}
 </MasterLayout>

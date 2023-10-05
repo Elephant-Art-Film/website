@@ -10,6 +10,7 @@ const articles = (await getCollection('news')).sort(
 ---
 
 <MasterLayout title="ELEPHANT | News" description="">
+	<h1 class="text-4xl font-bold mb-6">News</h1>
 	{
 		articles.map((article) => (
 			<NewsCard
