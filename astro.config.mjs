@@ -4,6 +4,6 @@ import mdx from "@astrojs/mdx";
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://elephant.meglic.dev',
+  site: 'https://elephant-art-film.com',
   integrations: [tailwind(), mdx()]
 });
