@@ -10,7 +10,6 @@ color: 'color'
 soundFormat: '5.1'
 imdbId: 'tt23671946'
 trailer: 'FVvhjHClV3w'
-teasers: ['LRFT5L0zzoY', 'Sr1D1FAxfDc', 'yJDoFcWgqwA']
 ---
 
 import YouTube from '@components/YouTube.astro';
@@ -20,10 +19,6 @@ While David is facing a crisis in his current relationship, a phone call about h
 <h2>Trailer</h2>
 <YouTube id={frontmatter.trailer} class="mx-auto my-6" />
 
-<h2>Teasers</h2>
-{frontmatter.teasers.map((id) => (
-  <YouTube id={id} class="mx-auto my-6" />
-))}
 
 <h2>Stills</h2>
 
@@ -32,10 +27,10 @@ While David is facing a crisis in his current relationship, a phone call about h
 - Mindfield Film Festival • Albuquerque – Diamond Award for Best Short Film, Diamond Award for Best Director
 - Feel The Reel International Film Festival – Best Actress Nominee, Best Original Score Nominee
 - Direct Monthly Online Film Festival – Best Cinematography Winner, Critics Choice Award Winner
-- Top Shorts – Semi-Finalist
+- Top Shorts – Film of the Month Winner, Best Indie Film Winner, Best Director Winner, Best Actress Winner, Best Score Winner
 - Top Indie Film Awards – Best Cinematography Winner, Best Music Winner, Best Short Nominee, Best Director Nominee, Best Writing Nominee
 - Bucharest ShortCut CineFest – Official Selection
-- Underground Cinema Film Awards – Official Selection
+- Underground Cinema Film Awards – Best International Short Nominee
 - IndieFlicks Monthly International Film Festival – Official Selection
 - 8 And HalFilm Awards – Best European Short Film Winner, Best Mystery Film Winner
 - Reale Film Festival – Best What If Winner
@@ -45,4 +40,35 @@ While David is facing a crisis in his current relationship, a phone call about h
 - Rome Prisma Film Awards – Finalist
 - Festival slovenskega filma – Official Selection
 - Festival neodvisnega filma Slovenije – Official Selection
-- Sipontum Arthouse International Film Festival – Official Selection
+- Sipontum Arthouse International Film Festival – Best Cinematography (Medium-Length Film) Winner
+
+<h2>Cast and crew</h2>
+
+<span class="font-light">Cast:</span> Miha Rodman, Lea Mihevc, Lara Fortuna  
+<span class="font-light">Writor and Director:</span> Jan Fabris  
+<span class="font-light">Director of Photography:</span> Vida Habjanič  
+<span class="font-light">Production Designer:</span> Nataša Majakovska  
+<span class="font-light">Costume Designer:</span> Barbara Drmota  
+<span class="font-light">Music:</span> Ruslan Perezhilo  
+<span class="font-light">Sound Designer:</span> Julij Zornik  
+<span class="font-light">Assistant Director:</span> Gordan Golubović  
+<span class="font-light">Script Supervisor:</span> Irena Žugič  
+<span class="font-light">Key Make-up Artist:</span> Lea Bole  
+<span class="font-light">Camera Assistant:</span> Alen Hoheger  
+<span class="font-light">Production Sound Mixer:</span> Alojz Lopič  
+<span class="font-light">Boom Operator:</span> Benjamin Lopič  
+<span class="font-light">Set Decorator:</span> Tina Merica  
+<span class="font-light">Property Masters:</span> Ana Šega, Barbara Drmota  
+<span class="font-light">Assistant Make-up Artist:</span> Nina Gudeljević  
+<span class="font-light">Gaffer:</span> Ana Šega  
+<span class="font-light">Editor and Colorist:</span> Jan Fabris  
+<span class="font-light">Set Photographer:</span> Ada Trkulja  
+<span class="font-light">Sound Editor:</span> Miha Jaramaz  
+<span class="font-light">Dialogue Editor:</span> Julij Zornik  
+<span class="font-light">ADR Recordist:</span> Gregor Bajc  
+<span class="font-light">Foley Artist:</span> Jaka Skočir  
+<span class="font-light">Foley Recordist and Editor:</span> Žiga Rangus  
+<span class="font-light">Sound Post Production:</span> 001  
+<span class="font-light">Executive Producers:</span> Ada Trkulja, Yun Shen  
+<span class="font-light">Producer:</span> Jan Fabris, ELEPHANT art film production  
+
