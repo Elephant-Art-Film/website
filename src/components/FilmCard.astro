@@ -16,8 +16,8 @@ interface Props {
 const { film, slug } = Astro.props;
 ---
 
-<article class="pb-6">
-	<a href={`/${slug}`} class="flex gap-4">
+<article class="pb-4">
+	<a href={`/${slug}`} class="flex flex-col sm:flex-row gap-4 p-2 hover:bg-zinc-900">
 		<img src={film.poster} alt={film.title} class="w-64 object-cover" />
 		<div class="flex-grow">
 			<h1 class="text-2xl font-montserrat font-bold mt-2 mb-4">{film.title}</h1>

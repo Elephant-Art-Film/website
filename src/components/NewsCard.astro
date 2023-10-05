@@ -7,21 +7,21 @@ interface Props {
 		src: string;
 		alt: string;
 	};
-	description: string;
+	description?: string;
 }
 
 const { title, slug, publishDate, image, description } = Astro.props;
 ---
 
-<article class="pb-6">
-	<a href={`/news/${slug}`} class="flex gap-4">
-		<img src={image.src} alt={image.alt} class="h-48 w-72 object-cover" />
+<article class="pb-4">
+	<a href={`/news/${slug}`} class="grid grid-cols-1 sm:grid-cols-2 gap-4 p-2 hover:bg-zinc-900">
+		<img src={image.src} alt={image.alt} class="h-48 object-contain mx-auto sm:mr-0" />
 		<div class="flex-grow">
-			<h1 class="text-xl font-montserrat font-bold">{title}</h1>
-			<time datetime={publishDate.toISOString()} class="text-sm font-montserrat">
+			<h1 class="text-xl font-montserrat font-bold mt-1 mb-3">{title}</h1>
+			<time datetime={publishDate.toISOString()} class="text-lg font-light font-montserrat">
 				{publishDate.toLocaleDateString()}
 			</time>
-			<p class="mt-2">{description}</p>
+			<!-- <p class="mt-2">{description}</p> -->
 		</div>
 	</a>
 </article>
