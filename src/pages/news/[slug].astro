@@ -20,7 +20,8 @@ if (!article) throw new Error('Missing article');
 const { Content } = await article.render();
 ---
 
-<MasterLayout title={`ELEPHANT | ${article.data.title}`} description="">
+<MasterLayout title={`ELEPHANT | ${article.data.title}`} description={article.data.description}>
+	<img src={article.data.image} alt={article.data.title} class="mb-8" />
 	<h1 class="text-4xl mb-4">{article.data.title}</h1>
 	<time datetime={article.data.publishDate.toISOString()} class="text-lg">
 		{article.data.publishDate.toLocaleDateString()}

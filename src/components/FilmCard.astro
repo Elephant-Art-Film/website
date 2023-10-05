@@ -17,8 +17,8 @@ const { film, slug } = Astro.props;
 ---
 
 <article class="pb-4">
-	<a href={`/${slug}`} class="flex flex-col sm:flex-row gap-4 p-2 hover:bg-zinc-900">
-		<img src={film.poster} alt={film.title} class="w-64 object-cover" />
+	<a href={`/${slug}`} class="flex flex-col sm:flex-row gap-2 sm:gap-4 p-2 hover:bg-zinc-900">
+		<img src={film.poster} alt={film.title} class="w-64 mx-auto sm:mx-0 object-cover" />
 		<div class="flex-grow">
 			<h1 class="text-2xl font-montserrat font-bold mt-2 mb-4">{film.title}</h1>
 			<div class="text-md my-1">{film.genre.join(' · ')}</div>
