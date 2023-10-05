@@ -25,9 +25,9 @@ const { Content } = await film.render();
 
 <MasterLayout title={`ELEPHANT | ${film.data.title}`} description="">
 	<img src={film.data.cover} alt={film.data.title} />
-	<h1 class="text-4xl font-montserrat my-4">{film.data.title}</h1>
-	<div class="text-md font-montserrat my-1">{film.data.genre.join(' · ')}</div>
-	<div class="text-md font-montserrat my-1">
+	<h1 class="text-4xl my-4">{film.data.title}</h1>
+	<div class="text-md my-1">{film.data.genre.join(' · ')}</div>
+	<div class="text-md my-1">
 		{film.data.year} · {film.data.runtime} · {film.data.aspectRatio} · {film.data.color} · {film.data.soundFormat}
 	</div>
 	{
