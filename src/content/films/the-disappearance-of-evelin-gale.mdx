@@ -23,6 +23,12 @@ While David is facing a crisis in his current relationship, a phone call about h
 
 <h2>Stills</h2>
 
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+    {frontmatter.stills.map((still, index) => (
+        <img src={still} alt={`${frontmatter.title} - Still ${index}`} class="!my-0" />
+    ))}
+</div>
+
 <h2>Awards</h2>
 
 - Mindfield Film Festival • Albuquerque – Diamond Award for Best Short Film, Diamond Award for Best Director

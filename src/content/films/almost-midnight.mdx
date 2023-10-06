@@ -23,6 +23,12 @@ A woman tries to seduce a man, but something is holding him back …
 
 <h2>Stills</h2>
 
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+    {frontmatter.stills.map((still, index) => (
+        <img src={still} alt={`${frontmatter.title} - Still ${index}`} class="!my-0" />
+    ))}
+</div>
+
 <h2>Awards</h2>
 
 - San Francisco Short Film Festival – Best Foreign Single Take Film Winner

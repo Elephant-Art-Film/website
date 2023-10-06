@@ -23,6 +23,12 @@ The content of the letter is slowly revealing, but some secrets do not permit th
 
 <h2>Stills</h2>
 
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+    {frontmatter.stills.map((still, index) => (
+        <img src={still} alt={`${frontmatter.title} - Still ${index}`} class="!my-0" />
+    ))}
+</div>
+
 <h2>Awards</h2>
 
 - Top Indie Film Awards – Best Music Winner, Best Director Nominee, Best Editing Nominee
