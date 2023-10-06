@@ -1,7 +1,7 @@
 ---
 title: 'Thank you for attending Festival neodvisnega filma Slovenije 2023'
 publishDate: 2023-04-17
-image: 'https://elephantartfilm.files.wordpress.com/2023/05/dscf8825.jpg'
+image: 'https://cdn.elephant-art-film.com/news/2023-04-17_01.webp'
 description: "We would like to express our heartfelt gratitude to Festival neodvisnega filma 2023 for organizing this amazing event and selecting our films, Klara's Dance and The Disappearance of Evelin Gale."
 ---
 
