@@ -6,7 +6,7 @@ const newsCollection = defineCollection({
     title: z.string().nonempty(),
     publishDate: z.date(),
     image: z.string(),
-    description: z.string(),
+    description: z.string().optional(),
   }),
 });
 
