@@ -4,7 +4,7 @@ import { getCollection } from 'astro:content';
 import MasterLayout from '@layouts/master.astro';
 import FilmCard from '@components/FilmCard.astro';
 
-const films = (await getCollection('films')).sort((a, b) => b.data.year - a.data.year);
+const films = (await getCollection('films')).sort((a, b) => b.data.releaseOrder - a.data.releaseOrder);
 ---
 
 <MasterLayout title="ELEPHANT | News" description="">
