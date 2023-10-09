@@ -4,9 +4,17 @@ import { getCollection } from 'astro:content';
 import MasterLayout from '@layouts/master.astro';
 import NewsCard from '@components/NewsCard.astro';
 
-const articles = (await getCollection('news')).sort(
-	(a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime()
-);
+const articles = (await getCollection('news')).sort((a, b) => {
+    // First, sort by publishDate
+    const dateDifference = b.data.publishDate.getTime() - a.data.publishDate.getTime();
+    
+    // If publishDate is the same, sort by title
+    if (dateDifference === 0) {
+        return b.data.title.localeCompare(a.data.title);
+    }
+    
+    return dateDifference;
+});
 ---
 
 <MasterLayout title="ELEPHANT | News" description="">

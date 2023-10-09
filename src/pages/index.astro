@@ -6,7 +6,16 @@ import YouTube from '@components/YouTube.astro';
 import NewsCard from '@components/NewsCard.astro';
 
 const articles = (await getCollection('news'))
-	.sort((a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime())
+	.sort((a, b) => {
+    // First, sort by publishDate
+    const dateDifference = b.data.publishDate.getTime() - a.data.publishDate.getTime();
+    
+    // If publishDate is the same, sort by title in reverse alphabetical order
+    if (dateDifference === 0) {
+        return b.data.title.localeCompare(a.data.title);
+    }
+	return dateDifference;
+})
 	.slice(0, 3);
 ---
 
