@@ -14,6 +14,8 @@ interface Props {
 }
 
 const { title, description } = Astro.props;
+
+const currentYear = new Date().getFullYear();
 ---
 
 <!doctype html>
@@ -44,10 +46,10 @@ const { title, description } = Astro.props;
 				<img
 					src="/assets/brand/elephant-official-square.webp"
 					alt="ELEPHANT art film productions"
-					class="rounded-full w-48 mx-auto"
+					class="rounded-full w-48 xl:w-64 mx-auto"
 				/>
 			</a>
-			<nav class="w-full py-8 font-semibold text-lg">
+			<nav class="w-full py-8 font-semibold text-lg xl:text-2xl">
 				<a href="/">
 					<div class="text-center py-3 hover:bg-zinc-900">HOME</div>
 				</a>
@@ -97,11 +99,11 @@ const { title, description } = Astro.props;
 					/>
 				</a>
 			</div>
-			<main class="m-12 mt-8 xl:mt-12 2xl:mx-48">
+			<main class="m-12 mt-8 xl:mt-16 2xl:mx-48">
 				<slot />
 			</main>
-			<footer class="text-center font-montserrat font-light pb-8 mt-auto">
-				Copyright &copy; 2023 ELEPHANT art film production
+			<footer class="text-center font-light pb-8 pt-4 mt-auto">
+				Copyright &copy; 2019&ndash;{currentYear} ELEPHANT art film production
 			</footer>
 		</div>
 	</body>
