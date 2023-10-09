@@ -7,15 +7,13 @@ import NewsCard from '@components/NewsCard.astro';
 
 const articles = (await getCollection('news'))
 	.sort((a, b) => {
-    // First, sort by publishDate
-    const dateDifference = b.data.publishDate.getTime() - a.data.publishDate.getTime();
-    
-    // If publishDate is the same, sort by title in reverse alphabetical order
-    if (dateDifference === 0) {
-        return b.data.title.localeCompare(a.data.title);
-    }
-	return dateDifference;
-})
+		let dateDiff = b.data.publishDate.getTime() - a.data.publishDate.getTime();
+		if (dateDiff !== 0) return dateDiff;
+
+		if (a.data.order && b.data.order) return b.data.order - a.data.order;
+
+		return 0;
+	})
 	.slice(0, 3);
 ---
 
