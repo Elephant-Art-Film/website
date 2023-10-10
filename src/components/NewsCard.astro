@@ -14,10 +14,10 @@ const { title, slug, publishDate, image, description } = Astro.props;
 ---
 
 <article class="pb-4">
-	<a href={`/news/${slug}`} class="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4 p-2 hover:bg-zinc-900">
-		<img src={image.src} alt={image.alt} class="w-full sm:w-auto sm:h-48 object-contain mx-auto sm:mr-0" />
-		<div class="flex-grow">
-			<h1 class="text-xl font-bold mt-1 mb-2 sm:mb-3">{title}</h1>
+	<a href={`/news/${slug}`} class="grid grid-cols-1 gap-2 p-2 hover:bg-zinc-900">
+		<img src={image.src} alt={image.alt} class="w-full object-contain mx-auto order-1" />
+		<div class="flex-grow order-2">
+			<h1 class="text-2xl font-bold mt-1 mb-2">{title}</h1>
 			<time datetime={publishDate.toISOString()} class="text-lg font-light">
 				{publishDate.toLocaleDateString('sl-SI')}
 			</time>
