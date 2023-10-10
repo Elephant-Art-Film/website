@@ -3,6 +3,7 @@ import type { GetStaticPaths } from 'astro';
 import { getCollection, getEntry } from 'astro:content';
 
 import MasterLayout from '@layouts/master.astro';
+import UnorderedList from '@components/UnorderedList.astro';
 
 export const getStaticPaths = (async () => {
 	const articles = await getCollection('news');
@@ -20,13 +21,13 @@ if (!article) throw new Error('Missing article');
 const { Content } = await article.render();
 ---
 
-<MasterLayout title={`ELEPHANT | ${article.data.title}`} description={article.data.description}>
+<MasterLayout title={`ELEPHANT | ${article.data.title}`} description={article.data.description || ''}>
 	<img src={article.data.image} alt={article.data.title} class="mb-8" />
 	<h1 class="text-4xl mb-4">{article.data.title}</h1>
 	<time datetime={article.data.publishDate.toISOString()} class="text-lg">
-		{article.data.publishDate.toLocaleDateString()}
+		{article.data.publishDate.toLocaleDateString('sl-SI')}
 	</time>
 	<article class="prose-lg lg:prose-xl my-4">
-		<Content />
+		<Content components={{ ul: UnorderedList }} />
 	</article>
 </MasterLayout>
