@@ -31,7 +31,31 @@ const currentYear = new Date().getFullYear();
 		<meta name="description" content={description} />
 
 		<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100..900" rel="stylesheet" />
-		
+
+		<!-- Matomo -->
+		<script>
+			var _paq = (window._paq = window._paq || []);
+			/* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+			_paq.push(['trackPageView']);
+			_paq.push(['enableLinkTracking']);
+			(function () {
+				var u = '//analytics.elephant-art-film.com/';
+				_paq.push(['setTrackerUrl', u + 'matomo.php']);
+				_paq.push(['setSiteId', '1']);
+				var d = document,
+					g = d.createElement('script'),
+					s = d.getElementsByTagName('script')[0];
+				g.async = true;
+				g.src = u + 'matomo.js';
+				s.parentNode.insertBefore(g, s);
+			})();
+		</script>
+		<noscript>
+			<p>
+				<img src="//analytics.elephant-art-film.com/matomo.php?idsite=1&rec=1" style="border:0;" alt="" />
+			</p>
+		</noscript>
+		<!-- End Matomo Code -->
 	</head>
 	<body>
 		<header
@@ -79,7 +103,11 @@ const currentYear = new Date().getFullYear();
 				<a href="https://twitter.com/ElephantArtFilm" target="_blank" class="mx-2 w-7 hover:brightness-75">
 					<Fragment set:html={iconTwitter} />
 				</a>
-				<a href="https://www.facebook.com/profile.php?id=100089908492635" target="_blank" class="mx-2 w-7 hover:brightness-75">
+				<a
+					href="https://www.facebook.com/profile.php?id=100089908492635"
+					target="_blank"
+					class="mx-2 w-7 hover:brightness-75"
+				>
 					<Fragment set:html={iconFacebook} />
 				</a>
 				<a href="mailto:elephantartfilm@gmail.com" target="_blank" class="mx-2 w-7 hover:brightness-75">
