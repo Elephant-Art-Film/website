@@ -1,20 +1,13 @@
 ---
 import { getCollection } from 'astro:content';
 
+import { sortNews } from '@common/sorting.js';
+
 import MasterLayout from '@layouts/master.astro';
 import YouTube from '@components/YouTube.astro';
 import NewsCard from '@components/NewsCard.astro';
 
-const articles = (await getCollection('news'))
-	.sort((a, b) => {
-		let dateDiff = b.data.publishDate.getTime() - a.data.publishDate.getTime();
-		if (dateDiff !== 0) return dateDiff;
-
-		if (a.data.order && b.data.order) return b.data.order - a.data.order;
-
-		return 0;
-	})
-	.slice(0, 3);
+const articles = (await getCollection('news')).sort(sortNews).slice(0, 3);
 ---
 
 <MasterLayout title="ELEPHANT art film production" description="" showLogo={true}>

@@ -1,17 +1,12 @@
 ---
 import { getCollection } from 'astro:content';
 
+import { sortNews } from '@common/sorting.js';
+
 import MasterLayout from '@layouts/master.astro';
 import NewsCard from '@components/NewsCard.astro';
 
-const articles = (await getCollection('news')).sort((a, b) => {
-	let dateDiff = b.data.publishDate.getTime() - a.data.publishDate.getTime();
-	if (dateDiff !== 0) return dateDiff;
-
-	if (a.data.order && b.data.order) return b.data.order - a.data.order;
-
-	return 0;
-});
+const articles = (await getCollection('news')).sort(sortNews);
 ---
 
 <MasterLayout title="ELEPHANT | News" description="">
