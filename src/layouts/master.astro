@@ -7,6 +7,7 @@ import iconYoutube from '@icons/youtube.svg?raw';
 import iconTwitter from '@icons/twitter.svg?raw';
 import iconFacebook from '@icons/facebook.svg?raw';
 import iconMail from '@icons/email.svg?raw';
+import iconRSS from '@icons/rss.svg?raw';
 
 interface Props {
 	title: string;
@@ -112,6 +113,9 @@ const currentYear = new Date().getFullYear();
 				</a>
 				<a href="mailto:elephantartfilm@gmail.com" target="_blank" class="mx-2 w-7 hover:brightness-75">
 					<Fragment set:html={iconMail} />
+				</a>
+				<a href="/news/feed" class="mx-2 w-6 hover:brightness-75">
+					<Fragment set:html={iconRSS} />
 				</a>
 			</div>
 		</header>
