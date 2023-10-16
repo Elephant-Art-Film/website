@@ -4,14 +4,17 @@ import { getCollection } from 'astro:content';
 import MasterLayout from '@layouts/master.astro';
 import NewsCard from '@components/NewsCard.astro';
 
-const articles = (await getCollection('news')).sort((a, b) => {
-	let dateDiff = b.data.publishDate.getTime() - a.data.publishDate.getTime();
-	if (dateDiff !== 0) return dateDiff;
+const allArticles = await getCollection('news');
+const articles = allArticles
+	.filter(article => article.data.image && article.data.image.startsWith('/path/to/images/thumb_'))
+	.sort((a, b) => {
+		let dateDiff = b.data.publishDate.getTime() - a.data.publishDate.getTime();
+		if (dateDiff !== 0) return dateDiff;
 
-	if (a.data.order && b.data.order) return b.data.order - a.data.order;
+		if (a.data.order && b.data.order) return b.data.order - a.data.order;
 
-	return 0;
-});
+		return 0;
+	});
 ---
 
 <MasterLayout title="ELEPHANT | News" description="">
