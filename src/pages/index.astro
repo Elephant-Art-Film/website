@@ -21,7 +21,7 @@ const articles = (await getCollection('news')).sort(sortNews).slice(0, 3);
 				title={article.data.title}
 				slug={article.slug}
 				publishDate={article.data.publishDate}
-				image={{ src: article.data.image || '', alt: article.data.title }}
+				image={{ src: article.data.thumbnail || '', alt: article.data.title }}
 				description={article.data.description}
 			/>
 		))

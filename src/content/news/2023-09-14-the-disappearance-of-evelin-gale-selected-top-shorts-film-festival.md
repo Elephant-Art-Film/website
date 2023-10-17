@@ -1,6 +1,7 @@
 ---
 title: 'The Disappearance of Evelin Gale was officially selected to Top Shorts film festival'
 publishDate: 2023-09-14
+thumbnail: 'https://cdn.elephant-art-film.com/news/thumb_2023-09-14_01.webp'
 image: 'https://cdn.elephant-art-film.com/news/2023-09-14_01.webp'
 description: "The Disappearance of Evelin Gale, has earned its place in the official selection of the esteemed Top Shorts Film Festival."
 ---

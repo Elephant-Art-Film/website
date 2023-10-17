@@ -2,6 +2,7 @@
 title: 'The Disappearance of Evelin Gale won Top Shorts for September 2023'
 publishDate: 2023-10-09
 order: 2
+thumbnail: 'https://cdn.elephant-art-film.com/news/thumb_2023-10-09_02.webp'
 image: 'https://cdn.elephant-art-film.com/news/2023-10-09_02.webp'
 description: "The Disappearance of Evelin Gale has been further recognized at the world's leading online film festival Top Shorts for September 2023."
 ---

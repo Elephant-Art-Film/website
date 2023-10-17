@@ -1,6 +1,7 @@
 ---
 title: 'Celebrating the Wrap of Our Short Films: A Heartfelt Thank You'
 publishDate: 2023-07-07
+thumbnail: 'https://cdn.elephant-art-film.com/news/thumb_2023-07-07_01.webp'
 image: 'https://cdn.elephant-art-film.com/news/2023-07-07_01.webp'
 description: "We would like to announce that our shooting of two new short films is complete."
 ---

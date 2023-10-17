@@ -5,7 +5,8 @@ const newsCollection = defineCollection({
   schema: z.object({
     title: z.string().nonempty(),
     publishDate: z.date(),
-    image: z.string(),
+    thumbnail: z.string().url(),
+    image: z.string().url(),
     order: z.number().optional(), // necessary when multiple news items are published on the same day
     description: z.string().optional(),
   }),
