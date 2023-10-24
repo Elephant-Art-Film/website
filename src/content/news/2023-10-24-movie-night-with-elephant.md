@@ -9,9 +9,9 @@ description: "The ELEPHANT crew is hosting an exclusive movie night, and you're 
 The **ELEPHANT** crew will be hosting a special movie screening event. This gathering will feature three short films by our director, Jan Fabris. For the convenience of both our local and international guests, all films will be presented with burnt-in English subtitles.
 
 ## Featured Films:
-- [**Almost Midnight:**](/films/almost-midnight) A woman tries to seduce a man, but something is holding him back …
-- [**The Disappearance of Evelin Gale:**](/films/the-disappearance-of-evelin-gale) While David is facing a crisis in his current relationship, a phone call about his ex-girlfriend makes him reflect upon his past decisions.
-- [**Klara's Dance:**](/films/klaras-dance) Distressed at an unexpected news, Klara keeps it a secret from her boyfriend thereby risking their relationship.
+- [**Almost Midnight:**](https://elephant-art-film.com/almost-midnight/) A woman tries to seduce a man, but something is holding him back …
+- [**The Disappearance of Evelin Gale:**](https://elephant-art-film.com/the-disappearance-of-evelin-gale/) While David is facing a crisis in his current relationship, a phone call about his ex-girlfriend makes him reflect upon his past decisions.
+- [**Klara's Dance:**](https://elephant-art-film.com/klaras-dance/) Distressed at an unexpected news, Klara keeps it a secret from her boyfriend thereby risking their relationship.
 
 ## Event Details:
 - **Date:** 18th of November, 2023
