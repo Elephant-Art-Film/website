@@ -4,6 +4,7 @@ publishDate: 2023-10-24
 thumbnail: 'https://cdn.elephant-art-film.com/news/thumb_2023-10-24_01.webp'
 image: 'https://cdn.elephant-art-film.com/news/2023-10-24_01.webp'
 description: "The ELEPHANT crew is hosting an exclusive movie night, and you're invited."
+trailer: '4IMtSGKIfl4'
 ---
 
 The **ELEPHANT** crew will be hosting a special movie screening event. This gathering will feature three short films by our director, Jan Fabris. For the convenience of both our local and international guests, all films will be presented with burnt-in English subtitles.
@@ -22,3 +23,7 @@ The **ELEPHANT** crew will be hosting a special movie screening event. This gath
 Seats are limited, so please ensure your spot by reserving your tickets at [elephantartfilm@gmail.com](mailto:elephantartfilm@gmail.com). Admission is free.
 
 Mark the date and join us for an evening that promises captivating stories and the magic of cinema. We're excited to share this experience with you.
+
+## Trailer
+
+<YouTube id={frontmatter.trailer} class="md:mx-24 xl:mx-12 my-6" />
