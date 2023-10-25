@@ -25,4 +25,4 @@ Mark the date and join us for an evening that promises captivating stories and t
 
 ## Trailer
 
-<iframe width="100%" src="https://www.youtube.com/embed/4IMtSGKIfl4" frameborder="0" allowfullscreen class="md:mx-24 xl:mx-12 my-6"></iframe>
+<iframe width="100%" height="100%" src="https://www.youtube.com/embed/4IMtSGKIfl4" frameborder="0" allowfullscreen class="md:mx-24 xl:mx-12 my-6"></iframe>
