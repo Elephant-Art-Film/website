@@ -7,7 +7,6 @@ const newsCollection = defineCollection({
     publishDate: z.date(),
     thumbnail: z.string().url(),
     image: z.string().url(),
-    trailer: z.string().optional(), // youtube id
     order: z.number().optional(), // necessary when multiple news items are published on the same day
     description: z.string().optional(),
   }),
