@@ -18,11 +18,11 @@ The **ELEPHANT** crew will be hosting a special movie screening event. This gath
 - **Time:** 18:00 CET (6:00 PM)
 - **Venue:** Cinema Hall of Center Zalog, Zaloška cesta 267, Ljubljana.
 
-## RSVP:
+## Reserve your tickets:
 Seats are limited, so please ensure your spot by reserving your tickets at [elephantartfilm@gmail.com](mailto:elephantartfilm@gmail.com). Admission is free.
 
 Mark the date and join us for an evening that promises captivating stories and the magic of cinema. We're excited to share this experience with you.
 
 ## Trailer
 
-<iframe src="https://www.youtube.com/embed/4IMtSGKIfl4" frameborder="0" allowfullscreen class="md:mx-24 xl:mx-12 my-6"></iframe>
+<iframe src="https://www.youtube.com/embed/4IMtSGKIfl4" frameborder="0" allowfullscreen></iframe>
