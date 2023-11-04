@@ -1,0 +1,14 @@
+---
+interface Props {
+	href: string;
+	target?: string;
+}
+
+let { href, target } = Astro.props;
+
+if (target === undefined) {
+	target = '_blank';
+}
+---
+
+<a {href} {target} class="font-bold underline hover:text-gray-100"><slot /></a>

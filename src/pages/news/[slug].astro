@@ -4,6 +4,7 @@ import { getCollection, getEntry } from 'astro:content';
 
 import MasterLayout from '@layouts/master.astro';
 import UnorderedList from '@components/UnorderedList.astro';
+import Link from '@components/Link.astro';
 
 export const getStaticPaths = (async () => {
 	const articles = await getCollection('news');
@@ -28,6 +29,6 @@ const { Content } = await article.render();
 		{article.data.publishDate.toLocaleDateString('sl-SI')}
 	</time>
 	<article class="prose-lg lg:prose-xl my-4">
-		<Content components={{ ul: UnorderedList }} />
+		<Content components={{ ul: UnorderedList, a: Link }} />
 	</article>
 </MasterLayout>
