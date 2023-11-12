@@ -20,6 +20,7 @@ const filmCollection = defineCollection({
     year: z.number(),
     cover: z.string().url(),
     poster: z.string().url(),
+    thumbnail: z.string().url(),
     genre: z.array(z.string()),
     runtime: z.string(),
     aspectRatio: z.string(),
