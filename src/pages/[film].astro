@@ -6,6 +6,7 @@ import MasterLayout from '@layouts/master.astro';
 import UnorderedList from '@components/UnorderedList.astro';
 
 import iconIMDb from '@icons/imdb.svg?raw';
+import iconZip from '@icons/zip.svg?raw';
 import Heading1 from '@components/Heading1.astro';
 import Heading2 from '@components/Heading2.astro';
 
@@ -32,17 +33,26 @@ const { Content } = await film.render();
 	<div class="text-md my-1">
 		{film.data.year} · {film.data.runtime} · {film.data.aspectRatio} · {film.data.color} · {film.data.soundFormat}
 	</div>
-	{
-		film.data.imdbId && (
-			<a
-				href={`https://www.imdb.com/title/${film.data.imdbId}/`}
-				target="_blank"
-				class="inline-block float-none sm:float-right mt-6 sm:-mt-12"
-			>
-				<Fragment set:html={iconIMDb} />
-			</a>
-		)
-	}
+	<div class="flex items-center gap-3 float-none sm:float-right mt-6 sm:-mt-12">
+		{
+			film.data.pressPack && (
+				<a
+					href={film.data.pressPack}
+					target="_blank"
+					class="fill-gray-200 h-full flex items-center gap-3 px-4 py-2 active:border-4 border-gray-600 rounded-md bg-zinc-900 hover:bg-zinc-950"
+				>
+					<Fragment set:html={iconZip} /> Press Pack
+				</a>
+			)
+		}
+		{
+			film.data.imdbId && (
+				<a href={`https://www.imdb.com/title/${film.data.imdbId}/`} target="_blank" class="h-full">
+					<Fragment set:html={iconIMDb} />
+				</a>
+			)
+		}
+	</div>
 
 	<article class="prose-lg lg:prose-xl my-8">
 		<Content components={{ ul: UnorderedList, h1: Heading1, h2: Heading2 }} />
