@@ -1,0 +1,21 @@
+---
+interface Props {
+	title: string;
+	slug: string;
+	image: {
+		src: string;
+		alt: string;
+	};
+	description?: string;
+}
+
+const { title, slug, image, description } = Astro.props;
+---
+
+<article class="pb-4">
+	<a href={`/qa/${slug}`} class="flex flex-col sm:flex-row gap-2 sm:gap-4 p-2 hover:bg-zinc-900">
+		<div class="flex-grow">
+			<h1 class="text-xl font-bold mt-1 mb-2 sm:mb-3">{title}</h1>
+		</div>
+	</a>
+</article>

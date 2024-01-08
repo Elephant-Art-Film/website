@@ -1,0 +1,34 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { getCollection, getEntry } from 'astro:content';
+
+import MasterLayout from '@layouts/master.astro';
+import UnorderedList from '@components/UnorderedList.astro';
+import Link from '@components/Link.astro';
+
+export const getStaticPaths = (async () => {
+	const QAs = await getCollection('qa');
+	return QAs.map((QA) => {
+		return { params: { slug: QA.slug } };
+	});
+}) satisfies GetStaticPaths;
+
+const { slug } = Astro.params;
+if (!slug) throw new Error('Missing slug');
+
+const QA = await getEntry<'qa', string>('qa', slug);
+if (!QA) throw new Error('Missing QA');
+
+const { Content } = await QA.render();
+---
+
+<MasterLayout title={`ELEPHANT | ${QA.data.title}`} description={QA.data.description || ''}>
+	<img src={QA.data.image} alt={QA.data.title} class="mb-8" />
+	<h1 class="text-4xl mb-4">{QA.data.title}</h1>
+	<time datetime={QA.data.publishDate.toISOString()} class="text-lg">
+		{QA.data.publishDate.toLocaleDateString('sl-SI')}
+	</time>
+	<QA class="prose-lg lg:prose-xl my-4">
+		<Content components={{ ul: UnorderedList, a: Link }} />
+	</QA>
+</MasterLayout>

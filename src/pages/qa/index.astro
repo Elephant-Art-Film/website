@@ -1,0 +1,14 @@
+---
+import { getCollection } from 'astro:content';
+import Link from '@components/Link.astro';
+import MasterLayout from '@layouts/master.astro';
+import QACard from '@components/QACard.astro';
+const QAs = (await getCollection('qa')).sort((a, b) => b.data.releaseOrder - a.data.releaseOrder);
+---
+
+<MasterLayout title="ELEPHANT | Q&A" description="">
+	<h1 class="text-4xl font-bold mb-6">Q&A</h1>
+	{
+		QAs.map((QA) => <QACard title={QA.data.title} slug={QA.slug} image={{ src: QA.data.thumbnail || '', alt: QA.data.title }}/>)
+	}
+</MasterLayout>
