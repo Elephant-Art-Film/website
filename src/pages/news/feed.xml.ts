@@ -1,7 +1,7 @@
 import type { APIContext } from 'astro';
 import { getCollection } from 'astro:content';
 
-import { sortNews } from '@common/sorting';
+import { sortNews } from '../../common/sorting';
 
 import rss from '@astrojs/rss';
 

@@ -1,10 +1,10 @@
 ---
 import { getCollection } from 'astro:content';
 
-import { sortNews } from '@common/sorting.js';
+import { sortNews } from '../../common/sorting.js';
 
-import MasterLayout from '@layouts/master.astro';
-import NewsCard from '@components/NewsCard.astro';
+import MasterLayout from '../../layouts/master.astro';
+import NewsCard from '../../components/NewsCard.astro';
 
 const articles = (await getCollection('news')).sort(sortNews);
 ---

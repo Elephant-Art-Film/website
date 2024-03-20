@@ -1,8 +1,8 @@
 ---
 import { getCollection } from 'astro:content';
 
-import MasterLayout from '@layouts/master.astro';
-import FilmCard from '@components/FilmCard.astro';
+import MasterLayout from '../../layouts/master.astro';
+import FilmCard from '../../components/FilmCard.astro';
 
 const films = (await getCollection('films')).sort((a, b) => b.data.releaseOrder - a.data.releaseOrder);
 ---

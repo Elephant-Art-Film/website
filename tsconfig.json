@@ -4,20 +4,6 @@
     "strictNullChecks": true,
     "moduleResolution": "node",
     "baseUrl": "D:/Projects/603_ElephantArtFilm/04_Software/website",
-    "paths": {
-      "@components/*": [
-        "src/components/*"
-      ],
-      "@layouts/*": [
-        "src/layouts/*"
-      ],
-      "@icons/*": [
-        "src/icons/*"
-      ],
-      "@common/*": [
-        "src/common/*"
-      ]
-    },
     "jsx": "preserve"
   }
 }

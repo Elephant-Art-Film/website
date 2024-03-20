@@ -1,4 +1,4 @@
-import { CollectionEntry } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
 
 export function sortNews(a: CollectionEntry<'news'>, b: CollectionEntry<'news'>) {
   let dateDiff = b.data.publishDate.getTime() - a.data.publishDate.getTime();

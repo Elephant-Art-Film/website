@@ -2,13 +2,13 @@
 import type { GetStaticPaths } from 'astro';
 import { getCollection, getEntry } from 'astro:content';
 
-import MasterLayout from '@layouts/master.astro';
-import UnorderedList from '@components/UnorderedList.astro';
+import MasterLayout from '../layouts/master.astro';
+import UnorderedList from '../components/UnorderedList.astro';
 
-import iconIMDb from '@icons/imdb.svg?raw';
-import iconZip from '@icons/zip.svg?raw';
-import Heading1 from '@components/Heading1.astro';
-import Heading2 from '@components/Heading2.astro';
+import iconIMDb from '../icons/imdb.svg?raw';
+import iconZip from '../icons/zip.svg?raw';
+import Heading1 from '../components/Heading1.astro';
+import Heading2 from '../components/Heading2.astro';
 
 export const getStaticPaths = (async () => {
 	const films = await getCollection('films');
