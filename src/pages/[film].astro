@@ -47,7 +47,12 @@ const { Content } = await film.render();
 		}
 		{
 			film.data.imdbId && (
-				<a href={`https://www.imdb.com/title/${film.data.imdbId}/`} target="_blank" class="h-full">
+				<a
+					href={`https://www.imdb.com/title/${film.data.imdbId}/`}
+					target="_blank"
+					class="h-full"
+					aria-label="IMDb"
+				>
 					<Fragment set:html={iconIMDb} />
 				</a>
 			)
