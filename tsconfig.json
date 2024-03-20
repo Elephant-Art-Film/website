@@ -3,7 +3,6 @@
   "compilerOptions": {
     "strictNullChecks": true,
     "moduleResolution": "node",
-    "baseUrl": "D:/Projects/603_ElephantArtFilm/04_Software/website",
-    "jsx": "preserve"
+    "baseUrl": "D:/Projects/603_ElephantArtFilm/04_Software/website"
   }
 }
