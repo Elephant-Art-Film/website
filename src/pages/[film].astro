@@ -9,6 +9,7 @@ import iconIMDb from '../icons/imdb.svg?raw';
 import iconZip from '../icons/zip.svg?raw';
 import Heading1 from '../components/Heading1.astro';
 import Heading2 from '../components/Heading2.astro';
+import type { AstroComponentFactory } from 'astro/dist/runtime/server';
 
 export const getStaticPaths = (async () => {
 	const films = await getCollection('films');
@@ -24,6 +25,13 @@ const film = await getEntry<'films', string>('films', slug);
 if (!film) throw new Error('Missing film');
 
 const { Content } = await film.render();
+
+let QnAContent: AstroComponentFactory | undefined;
+const qna = await getEntry<'filmQnAs', string>('filmQnAs', slug);
+if (qna) {
+	const { Content: temp } = await qna.render();
+	QnAContent = temp;
+}
 ---
 
 <MasterLayout title={`ELEPHANT | ${film.data.title}`} description="">
@@ -59,7 +67,46 @@ const { Content } = await film.render();
 		}
 	</div>
 
-	<article class="prose-lg lg:prose-xl my-8">
+	<div class="mt-6 text-lg font-semibold border-zinc-400 border-b-2 flex">
+		<div id="about-btn" class="p-4 py-2 cursor-pointer bg-zinc-700 hover:bg-zinc-600">About</div>
+		{
+			qna && (
+				<div id="qna-btn" class="p-4 py-2 cursor-pointer hover:bg-zinc-600">
+					Q&A
+				</div>
+			)
+		}
+	</div>
+
+	<article id="about" class="prose-lg lg:prose-xl my-8">
 		<Content components={{ ul: UnorderedList, h1: Heading1, h2: Heading2 }} />
 	</article>
+
+	{
+		QnAContent && (
+			<article id="qna" class="prose-lg lg:prose-xl my-8 hidden">
+				<QnAContent components={{ ul: UnorderedList, h1: Heading1, h2: Heading2 }} />
+			</article>
+		)
+	}
 </MasterLayout>
+
+<script>
+	const panels = ['about', 'qna'];
+
+	function switchPanel(id: string) {
+		panels.forEach((pid) => {
+			if (document.getElementById(pid)) {
+				document.getElementById(`${pid}-btn`)?.classList.remove('bg-zinc-700');
+				document.getElementById(pid)?.classList.add('hidden');
+			}
+		});
+
+		document.getElementById(`${id}-btn`)?.classList.add('bg-zinc-700');
+		document.getElementById(id)?.classList.remove('hidden');
+	}
+
+	panels.forEach((id) => {
+		document.getElementById(`${id}-btn`)?.addEventListener('click', () => switchPanel(id));
+	});
+</script>

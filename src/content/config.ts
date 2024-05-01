@@ -38,7 +38,12 @@ const filmCollection = defineCollection({
   }),
 });
 
+const filmQnACollection = defineCollection({
+  type: 'content',
+});
+
 export const collections = {
   films: filmCollection,
+  filmQnAs: filmQnACollection,
   news: newsCollection,
 };
