@@ -25,13 +25,6 @@ const film = await getEntry<'films', string>('films', slug);
 if (!film) throw new Error('Missing film');
 
 const { Content } = await film.render();
-
-let QnAContent: AstroComponentFactory | undefined;
-const qna = await getEntry<'filmQnAs', string>('filmQnAs', slug);
-if (qna) {
-	const { Content: temp } = await qna.render();
-	QnAContent = temp;
-}
 ---
 
 <MasterLayout title={`ELEPHANT | ${film.data.title}`} description="">
@@ -67,28 +60,9 @@ if (qna) {
 		}
 	</div>
 
-	<div class="mt-6 text-lg font-semibold border-zinc-400 border-b-2 flex">
-		<div id="about-btn" class="p-4 py-2 cursor-pointer bg-zinc-700 hover:bg-zinc-600">About</div>
-		{
-			qna && (
-				<div id="qna-btn" class="p-4 py-2 cursor-pointer hover:bg-zinc-600">
-					Q&A
-				</div>
-			)
-		}
-	</div>
-
 	<article id="about" class="prose-lg lg:prose-xl my-8">
 		<Content components={{ ul: UnorderedList, h1: Heading1, h2: Heading2 }} />
 	</article>
-
-	{
-		QnAContent && (
-			<article id="qna" class="prose-lg lg:prose-xl my-8 hidden">
-				<QnAContent components={{ ul: UnorderedList, h1: Heading1, h2: Heading2 }} />
-			</article>
-		)
-	}
 </MasterLayout>
 
 <script>
