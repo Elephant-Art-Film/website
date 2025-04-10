@@ -5,12 +5,21 @@ import { sortNews } from '../common/sorting.js';
 
 import MasterLayout from '../layouts/master.astro';
 import YouTube from '../components/YouTube.astro';
+import FilmCard from '../components/FilmCard.astro';
 import NewsCard from '../components/NewsCard.astro';
 
+const films = (await getCollection('films')).sort((a, b) => b.data.releaseOrder - a.data.releaseOrder).slice(0, 3);
 const articles = (await getCollection('news')).sort(sortNews).slice(0, 3);
 ---
 
 <MasterLayout title="ELEPHANT art film production" description="" showLogo={true}>
+	<h2 class="text-4xl font-bold mb-6">Latest Films</h2>
+	<div class="latest-films grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+		{films.map(film => (
+		  <FilmCard slug={film.slug} film={film.data} minimal />
+		))}
+	  </div>
+
 	<h2 class="text-4xl font-bold mb-6">Showreel 2024</h2>
 	<YouTube id="PeF7iJxIRJ0" />
 
