@@ -18,16 +18,27 @@ const { film, slug, minimal } = Astro.props;
 ---
 
 <article class="pb-4">
-  <a href={`/${slug}`} class={minimal ? "block hover:shadow-lg" : "flex flex-col sm:flex-row gap-2 sm:gap-4 p-2 hover:bg-zinc-900"}>
-    <img src={film.thumbnail} alt={film.title} class={minimal ? "w-full object-cover" : "w-64 mx-auto sm:mx-0 object-cover"} />
-    { !minimal && (
-      <div class="flex-grow">
-        <h1 class="text-2xl font-montserrat font-bold mt-2 mb-4">{film.title}</h1>
-        <div class="text-md my-1">{film.genre.join(' · ')}</div>
-        <div class="text-md my-1">
-          {film.year} · {film.runtime} · {film.aspectRatio} · {film.color} · {film.soundFormat}
-        </div>
-      </div>
-    )}
-  </a>
+	<a
+		href={`/${slug}`}
+		class={minimal
+			? 'block opacity-85 hover:shadow-xl hover:opacity-100 transition duration-200'
+			: 'flex flex-col sm:flex-row gap-2 sm:gap-4 p-2 hover:bg-zinc-900'}
+	>
+		<img
+			src={film.thumbnail}
+			alt={film.title}
+			class={minimal ? 'w-full object-cover' : 'w-64 mx-auto sm:mx-0 object-cover'}
+		/>
+		{
+			!minimal && (
+				<div class="flex-grow">
+					<h1 class="text-2xl font-montserrat font-bold mt-2 mb-4">{film.title}</h1>
+					<div class="text-md my-1">{film.genre.join(' · ')}</div>
+					<div class="text-md my-1">
+						{film.year} · {film.runtime} · {film.aspectRatio} · {film.color} · {film.soundFormat}
+					</div>
+				</div>
+			)
+		}
+	</a>
 </article>
