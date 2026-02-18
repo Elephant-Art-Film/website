@@ -71,28 +71,121 @@ const { Content } = await film.render();
 			)
 		}
 	</div>
+	<!-- Section Tabs Navigation -->
+	<nav id="section-tabs" class="sticky top-0 z-20 -mx-12 px-12 py-3 mt-6 backdrop-blur-md bg-zinc-800/80 border-b border-white/5 overflow-x-auto scrollbar-hide">
+		<div class="flex gap-1 min-w-max" id="tabs-container">
+			<!-- Tabs are injected dynamically from h2 headings -->
+		</div>
+	</nav>
 
-	<article id="about" class="prose-lg lg:prose-xl my-8">
+	<article id="film-content" class="prose-lg lg:prose-xl my-8">
 		<Content components={{ ul: UnorderedList, h1: Heading1, h2: Heading2 }} />
 	</article>
 </MasterLayout>
 
-<script>
-	const panels = ['about', 'qna'];
-
-	function switchPanel(id: string) {
-		panels.forEach((pid) => {
-			if (document.getElementById(pid)) {
-				document.getElementById(`${pid}-btn`)?.classList.remove('bg-zinc-700');
-				document.getElementById(pid)?.classList.add('hidden');
-			}
-		});
-
-		document.getElementById(`${id}-btn`)?.classList.add('bg-zinc-700');
-		document.getElementById(id)?.classList.remove('hidden');
+<style>
+	.scrollbar-hide::-webkit-scrollbar {
+		display: none;
+	}
+	.scrollbar-hide {
+		-ms-overflow-style: none;
+		scrollbar-width: none;
 	}
 
-	panels.forEach((id) => {
-		document.getElementById(`${id}-btn`)?.addEventListener('click', () => switchPanel(id));
-	});
+	.section-tab {
+		padding: 0.5rem 1rem;
+		font-size: 0.875rem;
+		font-weight: 500;
+		letter-spacing: 0.025em;
+		color: rgb(156 163 175); /* gray-400 */
+		border-bottom: 2px solid transparent;
+		transition: all 0.25s ease;
+		white-space: nowrap;
+		cursor: pointer;
+		background: none;
+		border-top: none;
+		border-left: none;
+		border-right: none;
+	}
+
+	.section-tab:hover {
+		color: rgb(209 213 219); /* gray-300 */
+	}
+
+	.section-tab.active {
+		color: rgb(243 244 246); /* gray-100 */
+		border-bottom-color: rgb(243 244 246);
+	}
+</style>
+
+<script>
+	function initSectionTabs() {
+		const article = document.getElementById('film-content');
+		const tabsContainer = document.getElementById('tabs-container');
+
+		if (!article || !tabsContainer) return;
+
+		// Find all h2 elements within the article
+		const headings = article.querySelectorAll('h2[id]');
+		if (headings.length === 0) return;
+
+		// Create tab buttons
+		headings.forEach((heading) => {
+			const btn = document.createElement('button');
+			btn.className = 'section-tab';
+			btn.textContent = heading.textContent || '';
+			btn.dataset.target = heading.id;
+
+			btn.addEventListener('click', () => {
+				const target = document.getElementById(heading.id);
+				if (target) {
+					const tabBar = document.getElementById('section-tabs');
+					const offset = tabBar ? tabBar.offsetHeight + 16 : 80;
+					const top = target.getBoundingClientRect().top + window.scrollY - offset;
+					window.scrollTo({ top, behavior: 'smooth' });
+				}
+			});
+
+			tabsContainer.appendChild(btn);
+		});
+
+		// Active state tracking via IntersectionObserver
+		const tabs = tabsContainer.querySelectorAll('.section-tab');
+
+		function setActiveTab(targetId: string) {
+			tabs.forEach((tab) => {
+				if ((tab as HTMLElement).dataset.target === targetId) {
+					tab.classList.add('active');
+				} else {
+					tab.classList.remove('active');
+				}
+			});
+		}
+
+		// Observe each heading
+		const observer = new IntersectionObserver(
+			(entries) => {
+				// Find the first heading that is intersecting (i.e. in or near the viewport)
+				for (const entry of entries) {
+					if (entry.isIntersecting) {
+						setActiveTab(entry.target.id);
+						break;
+					}
+				}
+			},
+			{
+				rootMargin: '-80px 0px -60% 0px',
+				threshold: 0,
+			}
+		);
+
+		headings.forEach((heading) => observer.observe(heading));
+
+		// Set the first tab as active initially
+		if (tabs.length > 0) {
+			tabs[0].classList.add('active');
+		}
+	}
+
+	initSectionTabs();
 </script>
