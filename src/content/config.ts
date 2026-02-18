@@ -35,6 +35,7 @@ const filmCollection = defineCollection({
     stills: z.array(z.string().url()).optional(),
     awards: z.array(z.string()).optional(),
     pressPack: z.string().url().optional(),
+    watchUrl: z.string().url().optional(),
   }),
 });
 

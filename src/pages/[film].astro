@@ -6,6 +6,7 @@ import MasterLayout from '../layouts/master.astro';
 import UnorderedList from '../components/UnorderedList.astro';
 
 import iconIMDb from '../icons/imdb.svg?raw';
+import iconWatch from '../icons/watch.svg?raw';
 import iconZip from '../icons/zip.svg?raw';
 import Heading1 from '../components/Heading1.astro';
 import Heading2 from '../components/Heading2.astro';
@@ -54,6 +55,18 @@ const { Content } = await film.render();
 					aria-label="IMDb"
 				>
 					<Fragment set:html={iconIMDb} />
+				</a>
+			)
+		}
+		{
+			film.data.watchUrl && (
+				<a
+					href={film.data.watchUrl}
+					target="_blank"
+					class="h-full"
+					aria-label="Watch Online"
+				>
+					<Fragment set:html={iconWatch} />
 				</a>
 			)
 		}
