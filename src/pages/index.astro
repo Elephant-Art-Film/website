@@ -8,14 +8,59 @@ import YouTube from '../components/YouTube.astro';
 import FilmCard from '../components/FilmCard.astro';
 import NewsCard from '../components/NewsCard.astro';
 
-const films = (await getCollection('films')).sort((a, b) => b.data.releaseOrder - a.data.releaseOrder).slice(0, 3);
+const films = (await getCollection('films')).sort((a, b) => b.data.releaseOrder - a.data.releaseOrder);
 const articles = (await getCollection('news')).sort(sortNews).slice(0, 3);
 ---
 
 <MasterLayout title="ELEPHANT art film production" description="" showLogo={true}>
 	<h2 class="text-4xl font-bold mb-6">Latest Films</h2>
-	<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-		{films.map((film) => <FilmCard slug={film.slug} film={film.data} minimal />)}
+
+	<!-- Film Carousel -->
+	<div class="relative group mb-12" id="film-carousel-wrapper">
+		<!-- Left Arrow -->
+		<button
+			id="carousel-prev"
+			class="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-3 z-10 w-10 h-10 flex items-center justify-center rounded-full bg-black/60 hover:bg-black/90 text-gray-300 hover:text-white backdrop-blur-sm border border-white/10 opacity-0 group-hover:opacity-100 transition-all duration-300 disabled:opacity-0 disabled:cursor-default cursor-pointer"
+			aria-label="Previous films"
+		>
+			<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+				<path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+			</svg>
+		</button>
+
+		<!-- Scrollable Track -->
+		<div
+			id="film-carousel"
+			class="flex gap-6 overflow-x-hidden scroll-smooth"
+		>
+			{films.map((film) => (
+				<div class="flex-shrink-0 w-full md:w-[calc(50%-0.75rem)] lg:w-[calc(33.333%-1rem)]">
+					<FilmCard slug={film.slug} film={film.data} minimal />
+				</div>
+			))}
+		</div>
+
+		<!-- Right Arrow -->
+		<button
+			id="carousel-next"
+			class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-3 z-10 w-10 h-10 flex items-center justify-center rounded-full bg-black/60 hover:bg-black/90 text-gray-300 hover:text-white backdrop-blur-sm border border-white/10 opacity-0 group-hover:opacity-100 transition-all duration-300 disabled:opacity-0 disabled:cursor-default cursor-pointer"
+			aria-label="Next films"
+		>
+			<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+				<path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+			</svg>
+		</button>
+
+		<!-- Dot Indicators -->
+		<div id="carousel-dots" class="flex justify-center gap-2 mt-5">
+			{films.map((_, i) => (
+				<button
+					class="carousel-dot w-2 h-2 rounded-full bg-white/20 transition-all duration-300 cursor-pointer hover:bg-white/40"
+					data-index={i}
+					aria-label={`Go to film ${i + 1}`}
+				/>
+			))}
+		</div>
 	</div>
 
 	<h2 class="text-4xl font-bold mb-6">Showreel 2024</h2>
@@ -39,3 +84,95 @@ const articles = (await getCollection('news')).sort(sortNews).slice(0, 3);
 		</a>
 	</div>
 </MasterLayout>
+
+<script>
+	const carousel = document.getElementById('film-carousel');
+	const prevBtn = document.getElementById('carousel-prev') as HTMLButtonElement;
+	const nextBtn = document.getElementById('carousel-next') as HTMLButtonElement;
+	const dots = document.querySelectorAll('.carousel-dot');
+
+	if (carousel && prevBtn && nextBtn) {
+		function getCardWidth(): number {
+			const firstCard = carousel!.querySelector(':scope > div') as HTMLElement;
+			if (!firstCard) return 0;
+			// card width + gap (24px = gap-6)
+			return firstCard.offsetWidth + 24;
+		}
+
+		function getVisibleCount(): number {
+			const w = window.innerWidth;
+			if (w >= 1024) return 3;
+			if (w >= 768) return 2;
+			return 1;
+		}
+
+		function getCurrentIndex(): number {
+			const cardW = getCardWidth();
+			if (cardW === 0) return 0;
+			return Math.round(carousel!.scrollLeft / cardW);
+		}
+
+		function getTotalCards(): number {
+			return carousel!.querySelectorAll(':scope > div').length;
+		}
+
+		function getMaxIndex(): number {
+			return Math.max(0, getTotalCards() - getVisibleCount());
+		}
+
+		function updateControls() {
+			const idx = getCurrentIndex();
+			const maxIdx = getMaxIndex();
+
+			prevBtn!.disabled = idx <= 0;
+			nextBtn!.disabled = idx >= maxIdx;
+
+			// Update dots
+			dots.forEach((dot, i) => {
+				if (i <= maxIdx) {
+					(dot as HTMLElement).style.display = '';
+					if (i === idx) {
+						dot.classList.remove('bg-white/20');
+						dot.classList.add('bg-white/70', 'w-3', 'h-3');
+					} else {
+						dot.classList.add('bg-white/20');
+						dot.classList.remove('bg-white/70', 'w-3', 'h-3');
+					}
+				} else {
+					(dot as HTMLElement).style.display = 'none';
+				}
+			});
+		}
+
+		function scrollToIndex(idx: number) {
+			const clamped = Math.max(0, Math.min(idx, getMaxIndex()));
+			carousel!.scrollTo({ left: clamped * getCardWidth(), behavior: 'smooth' });
+		}
+
+		prevBtn.addEventListener('click', () => {
+			scrollToIndex(getCurrentIndex() - 1);
+		});
+
+		nextBtn.addEventListener('click', () => {
+			scrollToIndex(getCurrentIndex() + 1);
+		});
+
+		carousel.addEventListener('scroll', () => {
+			requestAnimationFrame(updateControls);
+		});
+
+		dots.forEach((dot) => {
+			dot.addEventListener('click', () => {
+				const idx = parseInt((dot as HTMLElement).dataset.index || '0');
+				scrollToIndex(idx);
+			});
+		});
+
+		window.addEventListener('resize', () => {
+			updateControls();
+		});
+
+		// Initialize
+		updateControls();
+	}
+</script>
