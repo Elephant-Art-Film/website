@@ -47,18 +47,7 @@ const { Content } = await film.render();
 				</a>
 			)
 		}
-		{
-			film.data.imdbId && (
-				<a
-					href={`https://www.imdb.com/title/${film.data.imdbId}/`}
-					target="_blank"
-					class="h-full"
-					aria-label="IMDb"
-				>
-					<Fragment set:html={iconIMDb} />
-				</a>
-			)
-		}
+		
 		{
 			film.data.watchUrl && (
 				<a
@@ -71,6 +60,18 @@ const { Content } = await film.render();
 				</a>
 			)
 		}
+		{
+			film.data.imdbId && (
+				<a
+					href={`https://www.imdb.com/title/${film.data.imdbId}/`}
+					target="_blank"
+					class="h-full"
+					aria-label="IMDb"
+				>
+					<Fragment set:html={iconIMDb} />
+				</a>
+			)
+		}
 	</div>
 
 	<article id="film-content" class="prose-lg lg:prose-xl my-8">
@@ -78,11 +79,13 @@ const { Content } = await film.render();
 	</article>
 
 	<!-- Section Tabs Navigation (hidden initially, moved into position by JS) -->
-	<nav id="section-tabs" class="hidden sticky top-0 z-20 -mx-12 px-12 mt-8 mb-4 border-b border-white/10">
-		<div class="scrollbar-hide flex items-center gap-8 overflow-x-auto" id="tabs-container">
-			<!-- Tabs injected dynamically -->
-		</div>
+<nav
+  id="section-tabs"
+  class="hidden sticky top-0 z-20 -mx-12 px-12 mt-10 mb-6 pt-3 border-b border-white/15"
+>
+  <div class="scrollbar-hide flex items-center gap-10 overflow-x-auto" id="tabs-container"></div>
 </nav>
+
 
 </MasterLayout>
 
@@ -148,8 +151,10 @@ const { Content } = await film.render();
 }
 
 .section-tab.active::after{
-  background: rgba(255,255,255,0.95);
+  background: rgba(255,255,255,0.98);
+  box-shadow: 0 0 14px rgba(255,255,255,0.18);
 }
+
 
 /* optional: visible keyboard focus */
 .section-tab:focus-visible{
