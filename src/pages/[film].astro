@@ -40,9 +40,10 @@ const { Content } = await film.render();
 				<a
 					href={film.data.pressPack}
 					target="_blank"
-					class="fill-gray-200 h-full flex items-center gap-3 px-4 py-2 active:border-4 border-gray-600 rounded-md bg-zinc-900 hover:bg-zinc-950"
+					class="h-full"
+					aria-label="Press Pack"
 				>
-					<Fragment set:html={iconZip} /> Press Pack
+					<Fragment set:html={iconZip} />
 				</a>
 			)
 		}
@@ -77,8 +78,8 @@ const { Content } = await film.render();
 	</article>
 
 	<!-- Section Tabs Navigation (hidden initially, moved into position by JS) -->
-	<nav id="section-tabs" class="hidden sticky top-0 z-20 -mx-12 px-12 py-4 mt-8 mb-4 backdrop-blur-md bg-zinc-800/80 border-y border-white/[0.06] overflow-x-auto scrollbar-hide">
-		<div class="flex gap-3 min-w-max" id="tabs-container">
+	<nav id="section-tabs" class="hidden sticky top-0 z-20 -mx-12 px-12 mt-8 mb-4 backdrop-blur-md bg-zinc-800/80 border-b border-white/[0.06]">
+		<div class="flex" id="tabs-container">
 			<!-- Tabs are injected dynamically from h2 headings -->
 		</div>
 	</nav>
@@ -94,32 +95,31 @@ const { Content } = await film.render();
 	}
 
 	.section-tab {
+		flex: 1;
 		display: inline-flex;
 		align-items: center;
-		padding: 0.4rem 1.15rem;
+		justify-content: center;
+		padding: 0.75rem 1rem;
 		font-size: 0.8rem;
 		font-weight: 500;
 		letter-spacing: 0.04em;
 		text-transform: uppercase;
-		color: rgb(161 161 170); /* zinc-400 */
-		background: rgb(39 39 42 / 0.6); /* zinc-800/60 */
-		border: 1px solid rgb(63 63 70 / 0.5); /* zinc-700/50 */
-		border-radius: 9999px;
-		transition: all 0.2s ease;
+		color: rgb(113 113 122); /* zinc-500 */
+		background: transparent;
+		border: none;
+		border-bottom: 2px solid transparent;
+		transition: color 0.2s ease, border-color 0.2s ease;
 		white-space: nowrap;
 		cursor: pointer;
 	}
 
 	.section-tab:hover {
-		color: rgb(228 228 231); /* zinc-200 */
-		background: rgb(63 63 70 / 0.5); /* zinc-700/50 */
-		border-color: rgb(82 82 91 / 0.7); /* zinc-600/70 */
+		color: rgb(212 212 216); /* zinc-300 */
 	}
 
 	.section-tab.active {
 		color: rgb(250 250 250); /* zinc-50 */
-		background: rgb(82 82 91 / 0.55); /* zinc-600/55 */
-		border-color: rgb(161 161 170 / 0.35); /* zinc-400/35 */
+		border-bottom-color: rgb(250 250 250); /* zinc-50 */
 	}
 </style>
 
