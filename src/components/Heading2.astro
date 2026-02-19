@@ -2,6 +2,47 @@
 const { id, ...rest } = Astro.props;
 ---
 
-<h2 id={id} {...rest} class="font-medium">
-	<slot />
+<h2
+  id={id}
+  {...rest}
+  class={`film-section-title font-medium ${className}`}
+>
+  <slot />
 </h2>
+
+<style>
+  .film-section-title {
+    position: relative;
+    margin-top: 3.5rem;   /* clear separation from previous section */
+    padding-top: 1.25rem; /* breathing room above divider */
+  }
+
+  /* subtle divider line above each section */
+  .film-section-title::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.10);
+  }
+
+  /*
+    Do not show divider for the very first section on the page
+    (bulletproof: only apply divider if there is something before)
+  */
+  #film-content > * + .film-section-title {
+    margin-top: 3.5rem;
+    padding-top: 1.25rem;
+  }
+
+  #film-content > .film-section-title {
+    margin-top: 1.5rem;
+    padding-top: 0;
+  }
+
+  #film-content > .film-section-title::before {
+    display: none;
+  }
+</style>
