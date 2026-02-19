@@ -154,6 +154,38 @@ const { Content } = await film.render();
   #film-content h2[id]{
   scroll-margin-top: 90px;
 }
+
+/* Awards */
+#film-content h2#awards + ul,
+#film-content h2[id="awards"] + ul {
+  list-style: none;
+  padding-left: 0;
+  margin-left: 0;
+}
+
+#film-content .award-item {
+  padding: 0.9rem 0;
+}
+
+#film-content .award-item + .award-item {
+  margin-top: 0.4rem; /* vertical rhythm instead of borders */
+}
+
+#film-content .award-item .festival {
+  font-size: 1rem;
+  font-weight: 400; /* no bold */
+  color: rgba(255,255,255,0.9);
+  letter-spacing: 0.01em;
+  line-height: 1.45;
+}
+
+#film-content .award-item .award-meta {
+  margin-top: 0.15rem;
+  font-size: 0.9rem;
+  color: rgba(255,255,255,0.55);
+  line-height: 1.6;
+}
+
 </style>
 
 
