@@ -1,7 +1,23 @@
 ---
-const props = Astro.props;
+const { class: klass = '', ...rest } = Astro.props;
 ---
 
-<h1 {...props} class="font-medium">
-	<slot />
+<h1 {...rest} class={`film-title font-medium ${klass}`}>
+  <slot />
 </h1>
+
+<style>
+  .film-title {
+    font-size: 2.25rem;       /* ~36px */
+    line-height: 1.15;
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+    letter-spacing: -0.01em;
+  }
+
+  @media (min-width: 768px) {
+    .film-title {
+      font-size: 2.75rem;     /* ~44px on desktop */
+    }
+  }
+</style>
