@@ -172,51 +172,51 @@ const { Content } = await film.render();
 }
 
 #film-content .award-item .festival {
-font-size: clamp(1.05em, 1.02em + 0.2vw, 1.18em);
-font-weight: 500;
-color: rgba(255, 255, 255, 0.90);
-letter-spacing: 0.01em;
-line-height: 1.45;
+  font-size: clamp(0.98em, 0.96em + 0.18vw, 1.10em);
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.90);
+  letter-spacing: 0.01em;
+  line-height: 1.45;
 }
 
 #film-content .award-item .award-meta {
-margin-top: 0.30em;
-font-size: clamp(0.98em, 0.96em + 0.15vw, 1.06em);
-font-weight: 400;
-color: rgba(255, 255, 255, 0.62);
-line-height: 1.7;
+  margin-top: 0.30em;
+  font-size: clamp(0.92em, 0.90em + 0.12vw, 1.00em);
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.62);
+  line-height: 1.7;
 }
 
- /* Credits */
-  #film-content .credits {
-    margin-top: 0.6em;
-  }
+/* Credits */
+#film-content .credits {
+  margin-top: 0.6em;
+}
 
-  #film-content .credit + .credit {
-    margin-top: 0.85em;
-  }
+#film-content .credit + .credit {
+  margin-top: 0.85em;
+}
 
-  #film-content .credit {
-    display: grid;
-    grid-template-columns: 13.5em 1fr; /* scales with font */
-    column-gap: 1.6em;
-    align-items: start;
-  }
+#film-content .credit {
+  display: grid;
+  grid-template-columns: 13.5em 1fr;
+  column-gap: 1.6em;
+  align-items: start;
+}
 
-  #film-content .credit .role {
-    font-size: clamp(0.96em, 0.94em + 0.12vw, 1.03em);
-    font-weight: 400;
-    color: rgba(255, 255, 255, 0.58);
-    letter-spacing: 0.01em;
-    line-height: 1.4;
-  }
+#film-content .credit .role {
+  font-size: clamp(0.90em, 0.88em + 0.10vw, 0.98em);
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.58);
+  letter-spacing: 0.01em;
+  line-height: 1.4;
+}
 
-  #film-content .credit .name {
-    font-size: clamp(1.00em, 0.98em + 0.12vw, 1.08em);
-    font-weight: 400;
-    color: rgba(255, 255, 255, 0.86);
-    line-height: 1.7;
-  }
+#film-content .credit .name {
+  font-size: clamp(0.95em, 0.93em + 0.10vw, 1.02em);
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.86);
+  line-height: 1.7;
+}
 
   /* Mobile stack */
   @media (max-width: 640px) {
