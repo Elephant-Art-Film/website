@@ -78,11 +78,11 @@ const { Content } = await film.render();
 	</article>
 
 	<!-- Section Tabs Navigation (hidden initially, moved into position by JS) -->
-	<nav id="section-tabs" class="hidden sticky top-0 z-20 -mx-12 px-12 mt-8 mb-4 bg-black/70 backdrop-blur-md border-b border-white/10">
+	<nav id="section-tabs" class="hidden sticky top-0 z-20 -mx-12 px-12 mt-8 mb-4 border-b border-white/10">
 		<div class="scrollbar-hide flex items-center gap-8 overflow-x-auto" id="tabs-container">
 			<!-- Tabs injected dynamically -->
 		</div>
-	</nav>
+</nav>
 
 </MasterLayout>
 
@@ -95,59 +95,69 @@ const { Content } = await film.render();
 		scrollbar-width: none;
 	}
 
-	.section-tab {
-  /* IMPORTANT: do NOT flex:1 for long labels */
-  flex: 0 0 auto;
-
+.section-tab{
+  flex: 0 0 auto;                /* don’t stretch */
   position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
 
-  padding: 0.9rem 0;            /* no “button box”, just label spacing */
+  padding: 0.75rem 0;            /* label-only feel */
   font-size: 1rem;
   font-weight: 500;
   letter-spacing: 0.01em;
-  text-transform: none;         /* matches the reference */
+  text-transform: none;
   white-space: nowrap;
 
-  color: rgba(255, 255, 255, 0.55);
+  color: rgba(255,255,255,0.55); /* inactive */
   background: transparent;
-  border: none;
+  border: 0;
   cursor: pointer;
   transition: color 180ms ease;
 }
-
-.section-tab:hover {
-  color: rgba(255, 255, 255, 0.8);
+.section-tab {
+  font-weight: 500;              /* base weight */
 }
 
-.section-tab::after {
-  content: "";
-  position: absolute;
+.section-tab.active {
+  color: rgba(255,255,255,0.95);
+  font-weight: 600;              /* slightly bolder active tab */
+}
+
+
+.section-tab:hover{
+  color: rgba(255,255,255,0.8);
+}
+
+/* underline indicator */
+.section-tab::after{
+  content:"";
+  position:absolute;
   left: 0;
   right: 0;
-  bottom: -1px;                 /* sits over the nav border */
+  bottom: -1px;                  /* sits on the nav border */
   height: 2px;
   background: transparent;
   border-radius: 999px;
   transition: background 180ms ease;
 }
 
-.section-tab.active {
-  color: rgba(255, 255, 255, 0.95);
+/* active highlight */
+.section-tab.active{
+  color: rgba(255,255,255,0.95);
 }
 
-.section-tab.active::after {
-  background: rgba(255, 255, 255, 0.95);
+.section-tab.active::after{
+  background: rgba(255,255,255,0.95);
 }
 
-/* Optional: keyboard focus */
-.section-tab:focus-visible {
+/* optional: visible keyboard focus */
+.section-tab:focus-visible{
   outline: 2px solid rgba(255,255,255,0.25);
   outline-offset: 4px;
   border-radius: 6px;
 }
+
 
 </style>
 
@@ -200,7 +210,6 @@ const { Content } = await film.render();
 			});
 			const active = [...tabs].find(t => t.dataset.target === targetId);
 			active?.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
-
 		}
 
 		// Observe each heading
