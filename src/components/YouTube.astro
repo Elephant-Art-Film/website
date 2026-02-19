@@ -8,11 +8,10 @@ const { id, class: classes } = Astro.props;
 const embedUrl = `https://www.youtube.com/embed/${id}`;
 ---
 
-<div class={`yt-embed ${classes}`}>
+<div class={`yt-embed ${classes ?? ""}`}>
   <iframe
     src={embedUrl}
     title="YouTube video player"
-    frameborder="0"
     loading="lazy"
     referrerpolicy="strict-origin-when-cross-origin"
     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -22,26 +21,23 @@ const embedUrl = `https://www.youtube.com/embed/${id}`;
 
 <style>
   .yt-embed {
+    /* prevents “drift” in grid/flex/centered text contexts */
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    margin-inline: 0;          /* align with content column */
+    justify-self: stretch;     /* if parent is a grid */
+    align-self: start;         /* if parent is flex */
+
     position: relative;
     aspect-ratio: 16 / 9;
-    width: 100%;
     overflow: hidden;
 
-    /* Minimalist styling */
     border-radius: 14px;
-    background: #0f0f10; /* subtle dark neutral behind video */
+    background: #0f0f10;
     box-shadow:
       0 8px 24px rgba(0, 0, 0, 0.08),
       0 2px 6px rgba(0, 0, 0, 0.06);
-
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
-  }
-
-  .yt-embed:hover {
-    transform: translateY(-1px);
-    box-shadow:
-      0 12px 32px rgba(0, 0, 0, 0.12),
-      0 4px 10px rgba(0, 0, 0, 0.08);
   }
 
   .yt-embed iframe {
@@ -50,6 +46,7 @@ const embedUrl = `https://www.youtube.com/embed/${id}`;
     width: 100%;
     height: 100%;
     border: 0;
+    display: block;            /* avoids inline iframe quirks */
     border-radius: inherit;
   }
 </style>
