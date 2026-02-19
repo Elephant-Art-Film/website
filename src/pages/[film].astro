@@ -78,11 +78,12 @@ const { Content } = await film.render();
 	</article>
 
 	<!-- Section Tabs Navigation (hidden initially, moved into position by JS) -->
-	<nav id="section-tabs" class="hidden sticky top-0 z-20 -mx-12 px-12 mt-8 mb-4 backdrop-blur-md bg-zinc-800/80 border-b border-white/[0.06]">
-		<div class="flex" id="tabs-container">
-			<!-- Tabs are injected dynamically from h2 headings -->
+	<nav id="section-tabs" class="hidden sticky top-0 z-20 -mx-12 px-12 mt-8 mb-4 bg-black/70 backdrop-blur-md border-b border-white/10">
+		<div class="scrollbar-hide flex items-center gap-8 overflow-x-auto" id="tabs-container">
+			<!-- Tabs injected dynamically -->
 		</div>
 	</nav>
+
 </MasterLayout>
 
 <style>
@@ -95,32 +96,59 @@ const { Content } = await film.render();
 	}
 
 	.section-tab {
-		flex: 1;
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		padding: 0.75rem 1rem;
-		font-size: 0.8rem;
-		font-weight: 500;
-		letter-spacing: 0.04em;
-		text-transform: uppercase;
-		color: rgb(113 113 122); /* zinc-500 */
-		background: transparent;
-		border: none;
-		border-bottom: 2px solid transparent;
-		transition: color 0.2s ease, border-color 0.2s ease;
-		white-space: nowrap;
-		cursor: pointer;
-	}
+  /* IMPORTANT: do NOT flex:1 for long labels */
+  flex: 0 0 auto;
 
-	.section-tab:hover {
-		color: rgb(212 212 216); /* zinc-300 */
-	}
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 
-	.section-tab.active {
-		color: rgb(250 250 250); /* zinc-50 */
-		border-bottom-color: rgb(250 250 250); /* zinc-50 */
-	}
+  padding: 0.9rem 0;            /* no “button box”, just label spacing */
+  font-size: 1rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  text-transform: none;         /* matches the reference */
+  white-space: nowrap;
+
+  color: rgba(255, 255, 255, 0.55);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: color 180ms ease;
+}
+
+.section-tab:hover {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.section-tab::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;                 /* sits over the nav border */
+  height: 2px;
+  background: transparent;
+  border-radius: 999px;
+  transition: background 180ms ease;
+}
+
+.section-tab.active {
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.section-tab.active::after {
+  background: rgba(255, 255, 255, 0.95);
+}
+
+/* Optional: keyboard focus */
+.section-tab:focus-visible {
+  outline: 2px solid rgba(255,255,255,0.25);
+  outline-offset: 4px;
+  border-radius: 6px;
+}
+
 </style>
 
 <script>
@@ -170,6 +198,9 @@ const { Content } = await film.render();
 					tab.classList.remove('active');
 				}
 			});
+			const active = [...tabs].find(t => t.dataset.target === targetId);
+			active?.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+
 		}
 
 		// Observe each heading
