@@ -89,8 +89,7 @@ const { Content } = await film.render();
 
 </MasterLayout>
 
-<style>
-  /* 1. Layout & Scrollbar Tweaks */
+<style is:global>
   .scrollbar-hide {
     -ms-overflow-style: none;
     scrollbar-width: none;
@@ -99,7 +98,6 @@ const { Content } = await film.render();
     display: none;
   }
 
-  /* 2. Base Tab Styles (Inactive) */
   .section-tab {
     flex: 0 0 auto;
     position: relative;
@@ -114,50 +112,46 @@ const { Content } = await film.render();
     text-transform: none;
     white-space: nowrap;
 
-    color: rgba(255, 255, 255, 0.45); /* Muted inactive color */
+    color: rgba(255, 255, 255, 0.45);
     background: transparent;
     border: 0;
     cursor: pointer;
     transition: color 180ms ease, font-weight 180ms ease;
   }
 
-  /* 3. The Underline Indicator (Hidden by default) */
   .section-tab::after {
     content: "";
     position: absolute;
     left: 0;
     right: 0;
-    bottom: -1px; /* Sits perfectly on the parent's border-b */
+    bottom: -1px;
     height: 2px;
     background: transparent;
     border-radius: 999px;
     transition: background 180ms ease, box-shadow 180ms ease;
   }
 
-  /* 4. Hover State */
   .section-tab:hover {
     color: rgba(255, 255, 255, 0.8);
   }
 
-  /* 5. ACTIVE STATE (The "Magic" Part) */
   .section-tab.active {
-    color: rgba(255, 255, 255, 1); /* Bright white text */
-    font-weight: 600;              /* Bolder text */
+    color: rgba(255, 255, 255, 1);
+    font-weight: 600;
   }
 
-  /* Activate the underline when the .active class is present */
   .section-tab.active::after {
-    background: rgba(255, 255, 255, 0.95); /* Visible white line */
-    box-shadow: 0 0 12px rgba(255, 255, 255, 0.3); /* Subtle glow */
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 0 12px rgba(255, 255, 255, 0.3);
   }
 
-  /* 6. Accessibility/Keyboard Focus */
   .section-tab:focus-visible {
     outline: 2px solid rgba(255, 255, 255, 0.25);
     outline-offset: 4px;
     border-radius: 4px;
   }
 </style>
+
 
 <script>
   function initSectionTabs() {
