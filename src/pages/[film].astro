@@ -90,156 +90,157 @@ const { Content } = await film.render();
 </MasterLayout>
 
 <style>
-	.scrollbar-hide::-webkit-scrollbar {
-		display: none;
-	}
-	.scrollbar-hide {
-		-ms-overflow-style: none;
-		scrollbar-width: none;
-	}
+  /* 1. Layout & Scrollbar Tweaks */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
 
-.section-tab{
-  flex: 0 0 auto;                /* don’t stretch */
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+  /* 2. Base Tab Styles (Inactive) */
+  .section-tab {
+    flex: 0 0 auto;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 
-  padding: 0.75rem 0;            /* label-only feel */
-  font-size: 1rem;
-  font-weight: 500;
-  letter-spacing: 0.01em;
-  text-transform: none;
-  white-space: nowrap;
+    padding: 0.75rem 0;
+    font-size: 1rem;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    text-transform: none;
+    white-space: nowrap;
 
-  color: rgba(255,255,255,0.55); /* inactive */
-  background: transparent;
-  border: 0;
-  cursor: pointer;
-  transition: color 180ms ease;
-}
-.section-tab {
-  font-weight: 500;              /* base weight */
-}
+    color: rgba(255, 255, 255, 0.45); /* Muted inactive color */
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    transition: color 180ms ease, font-weight 180ms ease;
+  }
 
-.section-tab.active {
-  color: rgba(255,255,255,0.95);
-  font-weight: 600;              /* slightly bolder active tab */
-}
+  /* 3. The Underline Indicator (Hidden by default) */
+  .section-tab::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -1px; /* Sits perfectly on the parent's border-b */
+    height: 2px;
+    background: transparent;
+    border-radius: 999px;
+    transition: background 180ms ease, box-shadow 180ms ease;
+  }
 
+  /* 4. Hover State */
+  .section-tab:hover {
+    color: rgba(255, 255, 255, 0.8);
+  }
 
-.section-tab:hover{
-  color: rgba(255,255,255,0.8);
-}
+  /* 5. ACTIVE STATE (The "Magic" Part) */
+  .section-tab.active {
+    color: rgba(255, 255, 255, 1); /* Bright white text */
+    font-weight: 600;              /* Bolder text */
+  }
 
-/* underline indicator */
-.section-tab::after{
-  content:"";
-  position:absolute;
-  left: 0;
-  right: 0;
-  bottom: -1px;                  /* sits on the nav border */
-  height: 2px;
-  background: transparent;
-  border-radius: 999px;
-  transition: background 180ms ease;
-}
+  /* Activate the underline when the .active class is present */
+  .section-tab.active::after {
+    background: rgba(255, 255, 255, 0.95); /* Visible white line */
+    box-shadow: 0 0 12px rgba(255, 255, 255, 0.3); /* Subtle glow */
+  }
 
-/* active highlight */
-.section-tab.active{
-  color: rgba(255,255,255,0.95);
-}
-
-.section-tab.active::after{
-  background: rgba(255,255,255,0.98);
-  box-shadow: 0 0 14px rgba(255,255,255,0.18);
-}
-
-
-/* optional: visible keyboard focus */
-.section-tab:focus-visible{
-  outline: 2px solid rgba(255,255,255,0.25);
-  outline-offset: 4px;
-  border-radius: 6px;
-}
-
-
+  /* 6. Accessibility/Keyboard Focus */
+  .section-tab:focus-visible {
+    outline: 2px solid rgba(255, 255, 255, 0.25);
+    outline-offset: 4px;
+    border-radius: 4px;
+  }
 </style>
 
 <script>
-	function initSectionTabs() {
-		const article = document.getElementById('film-content');
-		const tabNav = document.getElementById('section-tabs');
-		const tabsContainer = document.getElementById('tabs-container');
+  function initSectionTabs() {
+    const article = document.getElementById('film-content');
+    const tabNav = document.getElementById('section-tabs');
+    const tabsContainer = document.getElementById('tabs-container');
 
-		if (!article || !tabNav || !tabsContainer) return;
+    // 1. Safety Check
+    if (!article || !tabNav || !tabsContainer) return;
 
-		// Find all h2 elements within the article
-		const headings = article.querySelectorAll('h2[id]');
-		if (headings.length === 0) return;
+    // 2. Find Headings
+    const headings = article.querySelectorAll('h2[id]');
+    if (headings.length === 0) return;
 
-		// Move the tab nav into the article, right before the first h2
-		const firstH2 = headings[0];
-		firstH2.parentNode?.insertBefore(tabNav, firstH2);
-		tabNav.classList.remove('hidden');
+    // 3. Setup Navigation Position
+    // Move the tab nav right before the first h2
+    const firstH2 = headings[0];
+    firstH2.parentNode?.insertBefore(tabNav, firstH2);
+    tabNav.classList.remove('hidden');
 
-		// Create tab buttons
-		headings.forEach((heading) => {
-			const btn = document.createElement('button');
-			btn.className = 'section-tab';
-			btn.textContent = heading.textContent || '';
-			btn.dataset.target = heading.id;
+    // Clear container in case script runs multiple times (common in Astro)
+    tabsContainer.innerHTML = '';
 
-			btn.addEventListener('click', () => {
-				const target = document.getElementById(heading.id);
-				if (target) {
-					const offset = tabNav.offsetHeight + 16;
-					const top = target.getBoundingClientRect().top + window.scrollY - offset;
-					window.scrollTo({ top, behavior: 'smooth' });
-				}
-			});
+    // 4. Helper function to update classes
+    function setActiveTab(targetId) {
+      const tabs = tabsContainer.querySelectorAll('.section-tab');
+      tabs.forEach((tab) => {
+        const isTarget = tab.dataset.target === targetId;
+        tab.classList.toggle('active', isTarget);
+      });
 
-			tabsContainer.appendChild(btn);
-		});
+      // Keep active tab visible in the horizontal scroll
+      const active = tabsContainer.querySelector('.section-tab.active');
+      active?.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+    }
 
-		// Active state tracking via IntersectionObserver
-		const tabs = tabsContainer.querySelectorAll('.section-tab');
+    // 5. Create Tab Buttons
+    headings.forEach((heading) => {
+      const btn = document.createElement('button');
+      btn.className = 'section-tab';
+      btn.textContent = heading.textContent || '';
+      btn.dataset.target = heading.id;
 
-		function setActiveTab(targetId: string) {
-			tabs.forEach((tab) => {
-				if ((tab as HTMLElement).dataset.target === targetId) {
-					tab.classList.add('active');
-				} else {
-					tab.classList.remove('active');
-				}
-			});
-			const active = [...tabs].find(t => t.dataset.target === targetId);
-			active?.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
-		}
+      btn.addEventListener('click', () => {
+        const target = document.getElementById(heading.id);
+        if (target) {
+          // Calculate offset (nav height + extra spacing)
+          const offset = tabNav.offsetHeight + 20;
+          const top = target.getBoundingClientRect().top + window.scrollY - offset;
+          window.scrollTo({ top, behavior: 'smooth' });
+        }
+      });
 
-		// Observe each heading
-		const observer = new IntersectionObserver(
-			(entries) => {
-				for (const entry of entries) {
-					if (entry.isIntersecting) {
-						setActiveTab(entry.target.id);
-						break;
-					}
-				}
-			},
-			{
-				rootMargin: '-80px 0px -60% 0px',
-				threshold: 0,
-			}
-		);
+      tabsContainer.appendChild(btn);
+    });
 
-		headings.forEach((heading) => observer.observe(heading));
+    // 6. Active State Tracking (IntersectionObserver)
+    const observer = new IntersectionObserver(
+      (entries) => {
+        // Find the first heading currently entering the "viewing zone"
+        const visibleEntry = entries.find((entry) => entry.isIntersecting);
+        if (visibleEntry) {
+          setActiveTab(visibleEntry.target.id);
+        }
+      },
+      {
+        // This margin ensures the tab switches when heading is near the top
+        rootMargin: '-15% 0px -70% 0px',
+        threshold: 0,
+      }
+    );
 
-		// Set the first tab as active initially
-		if (tabs.length > 0) {
-			tabs[0].classList.add('active');
-		}
-	}
+    headings.forEach((heading) => observer.observe(heading));
 
-	initSectionTabs();
+    // Set first tab as active by default
+    if (headings.length > 0) {
+      setActiveTab(headings[0].id);
+    }
+  }
+
+  // Runs on initial load
+  initSectionTabs();
+
+  // Runs on Astro view transitions (if enabled)
+  document.addEventListener('astro:after-swap', initSectionTabs);
 </script>
