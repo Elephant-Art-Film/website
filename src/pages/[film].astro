@@ -164,65 +164,67 @@ const { Content } = await film.render();
 }
 
 #film-content .award-item {
-  padding: 0.9rem 0;
+  padding: 1.05em 0;
 }
 
 #film-content .award-item + .award-item {
-  margin-top: 0.4rem; /* vertical rhythm instead of borders */
+  margin-top: 0.55em;
 }
 
 #film-content .award-item .festival {
-  font-size: 1rem;
-  font-weight: 400; /* no bold */
-  color: rgba(255,255,255,0.9);
-  letter-spacing: 0.01em;
-  line-height: 1.45;
+font-size: clamp(1.05em, 1.02em + 0.2vw, 1.18em);
+font-weight: 500;
+color: rgba(255, 255, 255, 0.90);
+letter-spacing: 0.01em;
+line-height: 1.45;
 }
 
 #film-content .award-item .award-meta {
-  margin-top: 0.15rem;
-  font-size: 0.9rem;
-  color: rgba(255,255,255,0.55);
-  line-height: 1.6;
+margin-top: 0.30em;
+font-size: clamp(0.98em, 0.96em + 0.15vw, 1.06em);
+font-weight: 400;
+color: rgba(255, 255, 255, 0.62);
+line-height: 1.7;
 }
 
-/* Credits */
-/* Minimalist Credits styling */
-#film-content .credits {
-  margin-top: 0.5rem;
-}
-
-#film-content .credit + .credit {
-  margin-top: 0.65rem; /* airy rhythm, no borders */
-}
-
-#film-content .credit {
-  display: grid;
-  grid-template-columns: 180px 1fr;
-  column-gap: 1.25rem;
-  align-items: start;
-}
-
-#film-content .credit .role {
-  font-size: 0.9rem;
-  color: rgba(255,255,255,0.55);
-  letter-spacing: 0.01em;
-}
-
-#film-content .credit .name {
-  font-size: 1rem;
-  color: rgba(255,255,255,0.86);
-  line-height: 1.6;
-}
-
-/* Responsive: stack on small screens */
-@media (max-width: 640px) {
-  #film-content .credit {
-    grid-template-columns: 1fr;
-    row-gap: 0.25rem;
+ /* Credits */
+  #film-content .credits {
+    margin-top: 0.6em;
   }
-}
 
+  #film-content .credit + .credit {
+    margin-top: 0.85em;
+  }
+
+  #film-content .credit {
+    display: grid;
+    grid-template-columns: 13.5em 1fr; /* scales with font */
+    column-gap: 1.6em;
+    align-items: start;
+  }
+
+  #film-content .credit .role {
+    font-size: clamp(0.96em, 0.94em + 0.12vw, 1.03em);
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.58);
+    letter-spacing: 0.01em;
+    line-height: 1.4;
+  }
+
+  #film-content .credit .name {
+    font-size: clamp(1.00em, 0.98em + 0.12vw, 1.08em);
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.86);
+    line-height: 1.7;
+  }
+
+  /* Mobile stack */
+  @media (max-width: 640px) {
+    #film-content .credit {
+      grid-template-columns: 1fr;
+      row-gap: 0.35em;
+    }
+  }
 </style>
 
 
