@@ -177,58 +177,66 @@ const gid = `gallery-${Math.random().toString(36).slice(2, 6)}`;
 
 <script is:inline>
   (() => {
-    // Locate the current gallery instance
-    const scripts = document.getElementsByTagName('script');
-    const thisScript = scripts[scripts.length - 1];
-    const root = thisScript.closest('.film-gallery');
-    
+    const script = document.currentScript;
+    const gid = script?.closest('.film-gallery')?.dataset.galleryId;
+
+    // Prefer: exact instance by data-gallery-id (works even if DOM shifts)
+    const root =
+      (gid && document.querySelector(`.film-gallery[data-gallery-id="${gid}"]`)) ||
+      script?.closest('.film-gallery');
+
     if (!root) return;
 
     const dialog = root.querySelector('.lightbox-root');
     const mainImg = root.querySelector('.ui-img');
     const counter = root.querySelector('#curr');
     const buttons = Array.from(root.querySelectorAll('.still-link'));
-    const sources = buttons.map(b => b.querySelector('img').src);
-    
+    const sources = buttons.map(b => b.querySelector('img')?.src).filter(Boolean);
+
+    if (!dialog || !mainImg || !counter || sources.length === 0) return;
+
     let currentIndex = 0;
 
     const updateView = (index) => {
       currentIndex = index;
       mainImg.style.opacity = '0';
       mainImg.src = sources[currentIndex];
-      counter.textContent = currentIndex + 1;
-      mainImg.onload = () => mainImg.style.opacity = '1';
+      counter.textContent = String(currentIndex + 1);
+      mainImg.onload = () => (mainImg.style.opacity = '1');
     };
 
-    // Fix: Attach event listeners directly to buttons
     buttons.forEach((btn, i) => {
       btn.addEventListener('click', (e) => {
         e.preventDefault();
         updateView(i);
-        dialog.showModal();
-        document.body.style.overflow = 'hidden';
+
+        // guard for browsers without <dialog> support
+        if (typeof dialog.showModal === 'function') {
+          dialog.showModal();
+          document.body.style.overflow = 'hidden';
+        } else {
+          // minimal fallback: make it visible (optional)
+          dialog.setAttribute('open', '');
+          document.body.style.overflow = 'hidden';
+        }
       });
     });
 
-    // Lightbox UI events
+    // Close should also restore scrolling even on ESC (native dialog close)
+    dialog.addEventListener('close', () => {
+      document.body.style.overflow = '';
+    });
+
     root.addEventListener('click', (e) => {
-      if (e.target.closest('[data-close]')) {
-        dialog.close();
-        document.body.style.overflow = '';
-      }
+      if (e.target.closest('[data-close]')) dialog.close();
       if (e.target.closest('[data-prev]')) updateView((currentIndex - 1 + sources.length) % sources.length);
       if (e.target.closest('[data-next]')) updateView((currentIndex + 1) % sources.length);
     });
 
-    // Close on backdrop click
     dialog.addEventListener('click', (e) => {
-      if (e.target === dialog) {
-        dialog.close();
-        document.body.style.overflow = '';
-      }
+      if (e.target === dialog) dialog.close();
     });
 
-    // Keyboard support
     window.addEventListener('keydown', (e) => {
       if (!dialog.open) return;
       if (e.key === 'ArrowLeft') updateView((currentIndex - 1 + sources.length) % sources.length);
