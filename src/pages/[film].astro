@@ -76,7 +76,15 @@ const { Content } = await film.render();
 	</div>
 
 	<article id="film-content" class="prose-lg lg:prose-xl my-8">
-		<Content components={{ ul: UnorderedList, h1: Heading1, h2: Heading2 }} />
+		<Content
+  components={{
+    ul: UnorderedList,
+    h1: Heading1,
+    h2: Heading2,
+    YouTube,
+    StillsGallery,
+  }}
+/>
 	</article>
 
 	<!-- Section Tabs Navigation (hidden initially, moved into position by JS) -->
