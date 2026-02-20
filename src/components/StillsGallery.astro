@@ -5,7 +5,6 @@ interface Props {
 }
 
 const { stills, title = 'Film Still' } = Astro.props;
-/** Unique ID to prevent script collisions if multiple galleries exist */
 const gid = `gallery-${Math.random().toString(36).slice(2, 6)}`;
 ---
 
@@ -15,7 +14,7 @@ const gid = `gallery-${Math.random().toString(36).slice(2, 6)}`;
       stills.map((src, index) => (
         <button
           type="button"
-          class={`still-link ${index === 0 ? 'is-featured' : ''}`}
+          class="still-link"
           data-index={index}
           aria-label={`Open ${title} ${index + 1}`}
         >
@@ -51,44 +50,39 @@ const gid = `gallery-${Math.random().toString(36).slice(2, 6)}`;
 
 <style>
   .film-gallery {
-    margin: 4rem 0;
-    --gap: 12px;
+    margin: 3rem 0;
+    --gap: 16px;
   }
 
-  /* Grid: Keeps original ratio of images */
+  /* 3-column grid that respects original height/ratio */
   .grid-container {
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: var(--gap);
     align-items: start;
   }
 
   .still-link {
-    grid-column: span 2;
     border: none;
     padding: 0;
     background: transparent;
     cursor: zoom-in;
-    transition: opacity 0.3s ease;
-  }
-
-  /* First image takes up half the width (3 out of 6 columns) */
-  .still-link.is-featured {
-    grid-column: span 3;
+    transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), opacity 0.3s ease;
   }
 
   .thumbnail-img {
     width: 100%;
-    height: auto; /* This maintains the original ratio */
+    height: auto; /* Maintains original aspect ratio */
     display: block;
     border-radius: 2px;
   }
 
   .still-link:hover {
-    opacity: 0.8;
+    opacity: 0.9;
+    transform: translateY(-2px);
   }
 
-  /* Native Dialog Styling */
+  /* Lightbox Styles */
   .lightbox-root {
     border: none;
     padding: 0;
@@ -101,7 +95,7 @@ const gid = `gallery-${Math.random().toString(36).slice(2, 6)}`;
   }
 
   .lightbox-root::backdrop {
-    background: rgba(10, 10, 10, 0.95);
+    background: rgba(10, 10, 10, 0.98);
     backdrop-filter: blur(12px);
   }
 
@@ -117,7 +111,7 @@ const gid = `gallery-${Math.random().toString(36).slice(2, 6)}`;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 2rem;
+    padding: 0 4vw;
   }
 
   .ui-figure {
@@ -125,27 +119,27 @@ const gid = `gallery-${Math.random().toString(36).slice(2, 6)}`;
     flex: 1;
     display: flex;
     justify-content: center;
+    align-items: center;
   }
 
   .ui-img {
     max-width: 90vw;
     max-height: 80vh;
     object-fit: contain;
-    box-shadow: 0 30px 60px rgba(0,0,0,0.5);
-    transition: opacity 0.25s ease;
+    transition: opacity 0.2s ease;
   }
 
   .ui-nav {
     background: none;
     border: none;
-    color: rgba(255,255,255,0.4);
+    color: rgba(255,255,255,0.3);
     font-family: serif;
     font-style: italic;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.2em;
     cursor: pointer;
     padding: 2rem;
-    transition: color 0.2s;
+    transition: color 0.3s ease;
   }
 
   .ui-nav:hover { color: #fff; }
@@ -159,28 +153,31 @@ const gid = `gallery-${Math.random().toString(36).slice(2, 6)}`;
     color: #fff;
     font-size: 1.5rem;
     cursor: pointer;
-    z-index: 10;
+    z-index: 100;
   }
 
   .ui-footer {
     padding: 2rem;
     text-align: center;
     font-family: monospace;
-    font-size: 0.8rem;
-    letter-spacing: 0.2em;
-    opacity: 0.5;
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    opacity: 0.4;
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: 900px) {
+    .grid-container { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (max-width: 600px) {
     .grid-container { grid-template-columns: 1fr; }
-    .still-link, .still-link.is-featured { grid-column: span 1; }
     .ui-nav { display: none; }
   }
 </style>
 
 <script is:inline>
   (() => {
-    // Find the specific gallery root for this script instance
+    // Locate the current gallery instance
     const scripts = document.getElementsByTagName('script');
     const thisScript = scripts[scripts.length - 1];
     const root = thisScript.closest('.film-gallery');
@@ -203,16 +200,17 @@ const gid = `gallery-${Math.random().toString(36).slice(2, 6)}`;
       mainImg.onload = () => mainImg.style.opacity = '1';
     };
 
-    // Open on thumbnail click
+    // Fix: Attach event listeners directly to buttons
     buttons.forEach((btn, i) => {
-      btn.addEventListener('click', () => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
         updateView(i);
         dialog.showModal();
         document.body.style.overflow = 'hidden';
       });
     });
 
-    // Navigation logic
+    // Lightbox UI events
     root.addEventListener('click', (e) => {
       if (e.target.closest('[data-close]')) {
         dialog.close();
@@ -222,7 +220,7 @@ const gid = `gallery-${Math.random().toString(36).slice(2, 6)}`;
       if (e.target.closest('[data-next]')) updateView((currentIndex + 1) % sources.length);
     });
 
-    // Close on clicking backdrop
+    // Close on backdrop click
     dialog.addEventListener('click', (e) => {
       if (e.target === dialog) {
         dialog.close();
@@ -235,7 +233,6 @@ const gid = `gallery-${Math.random().toString(36).slice(2, 6)}`;
       if (!dialog.open) return;
       if (e.key === 'ArrowLeft') updateView((currentIndex - 1 + sources.length) % sources.length);
       if (e.key === 'ArrowRight') updateView((currentIndex + 1) % sources.length);
-      if (e.key === 'Escape') document.body.style.overflow = '';
     });
   })();
 </script>
