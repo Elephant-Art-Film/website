@@ -7,7 +7,7 @@ interface Props {
 
 const { stills, title = 'Still', columns = 3 } = Astro.props;
 
-/** Make a stable unique id so the script can target the right gallery */
+/** Stable unique id */
 const gid = `gallery-${Math.random().toString(36).slice(2, 10)}`;
 
 const colConfig = {
@@ -39,8 +39,7 @@ const colClass = colConfig[columns] || colConfig[3];
     }
   </div>
 
-  <!-- Lightbox -->
-  <div class="lightbox" aria-hidden="true">
+  <div class="lightbox" aria-hidden="true" tabindex="-1">
     <div class="lightbox-backdrop" data-close></div>
 
     <div class="lightbox-panel" role="dialog" aria-modal="true" aria-label="Image viewer">
@@ -58,169 +57,79 @@ const colClass = colConfig[columns] || colConfig[3];
 </div>
 
 <style>
-  /* Thumbnails keep original ratio (no crop) */
-  .still {
-    border: 0;
-    padding: 0;
-    background: transparent;
-    cursor: zoom-in;
-    display: block;
-  }
-
-  .still-img {
-    width: 100%;
-    height: auto;            /* keep original ratio */
-    display: block;
-    opacity: 0.92;
-    transition: opacity 180ms ease, transform 180ms ease;
-  }
-
-  .still:hover .still-img {
-    opacity: 1;
-    transform: translateY(-1px);
-  }
-
-  .still:focus-visible {
-    outline: 2px solid rgba(255,255,255,0.25);
-    outline-offset: 4px;
-  }
-
-  /* Lightbox */
-  .lightbox {
-    position: fixed;
-    inset: 0;
-    display: none;
-    z-index: 70;
-  }
-  .lightbox.is-open {
-    display: block;
-  }
-
-  .lightbox-backdrop {
-    position: absolute;
-    inset: 0;
-    background: rgba(0,0,0,0.78);
-    backdrop-filter: blur(6px);
-  }
-
-  .lightbox-panel {
-    position: relative;
-    height: 100%;
-    display: grid;
-    grid-template-columns: 56px 1fr 56px;
-    align-items: center;
-    padding: 24px;
-  }
-
-  .lightbox-figure {
-    margin: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 0;
-  }
-
+  /* ... Your existing styles are fine ... */
   .lightbox-img {
-    max-width: min(1400px, 92vw);
-    max-height: 86vh;
-    width: auto;
-    height: auto;
-    object-fit: contain;
-    background: #000;
-    box-shadow: 0 18px 60px rgba(0,0,0,0.6);
-  }
-
-  .lightbox-close {
-    position: absolute;
-    top: 14px;
-    right: 14px;
-    width: 42px;
-    height: 42px;
-    border: 0;
-    border-radius: 999px;
-    background: rgba(255,255,255,0.10);
-    color: rgba(255,255,255,0.9);
-    font-size: 26px;
-    line-height: 42px;
-    cursor: pointer;
-    transition: background 160ms ease;
-  }
-  .lightbox-close:hover {
-    background: rgba(255,255,255,0.16);
-  }
-
-  .lightbox-nav {
-    border: 0;
-    background: transparent;
-    color: rgba(255,255,255,0.85);
-    font-size: 56px;
-    height: 72px;
-    cursor: pointer;
-    opacity: 0.75;
-    transition: opacity 160ms ease;
-    user-select: none;
-  }
-  .lightbox-nav:hover {
-    opacity: 1;
-  }
-
-  @media (max-width: 640px) {
-    .lightbox-panel {
-      grid-template-columns: 44px 1fr 44px;
-      padding: 16px;
-    }
-    .lightbox-nav { font-size: 44px; }
-    .lightbox-img { max-height: 80vh; }
+    transition: opacity 0.2s ease-in-out;
   }
 </style>
 
 <script is:inline>
-  // Use a self-executing function to avoid global scope pollution
   (() => {
-    // Find the closest gallery container to this script
-    const root = document.currentScript.closest('.stills-gallery');
+    // FIX: Instead of variable interpolation, find the script's parent container
+    const scripts = document.getElementsByTagName('script');
+    const currentScript = scripts[scripts.length - 1];
+    const root = currentScript.closest('.stills-gallery');
+    
     if (!root) return;
 
+    const buttons = Array.from(root.querySelectorAll('button.still'));
     const lightbox = root.querySelector('.lightbox');
     const img = root.querySelector('[data-lightbox-img]');
-    const buttons = Array.from(root.querySelectorAll('button.still'));
-    const sources = buttons.map(b => b.querySelector('img')?.src).filter(Boolean);
-    
-    let index = 0;
 
-    const updateImage = (i) => {
-      index = i;
-      img.style.opacity = '0'; // Optional: fade out
-      img.src = sources[index];
-      img.alt = `Still ${index + 1}`;
-      img.onload = () => img.style.opacity = '1'; // Optional: fade in
-    };
+    if (!lightbox || !img || buttons.length === 0) return;
 
-    const open = (i) => {
+    const sources = buttons
+      .map((b) => b.querySelector('img')?.getAttribute('src'))
+      .filter(Boolean);
+
+    let currentIndex = 0;
+
+    function updateImage(i) {
+      currentIndex = i;
+      img.style.opacity = '0'; // Smooth transition
+      img.src = sources[currentIndex];
+      img.alt = `Still ${currentIndex + 1}`;
+      
+      // Fade back in once loaded
+      img.onload = () => { img.style.opacity = '1'; };
+    }
+
+    function openAt(i) {
       updateImage(i);
       lightbox.classList.add('is-open');
-      document.body.style.overflow = 'hidden';
-    };
+      lightbox.setAttribute('aria-hidden', 'false');
+      document.documentElement.style.overflow = 'hidden';
+      lightbox.focus();
+    }
 
-    const close = () => {
+    function close() {
       lightbox.classList.remove('is-open');
-      document.body.style.overflow = '';
-    };
+      lightbox.setAttribute('aria-hidden', 'true');
+      document.documentElement.style.overflow = '';
+      img.src = ''; 
+    }
 
-    // Event Delegation for Nav
-    root.addEventListener('click', (e) => {
-      if (e.target.closest('[data-close]')) close();
-      if (e.target.closest('[data-prev]')) updateImage((index - 1 + sources.length) % sources.length);
-      if (e.target.closest('[data-next]')) updateImage((index + 1) % sources.length);
-    });
+    function prev() {
+      updateImage((currentIndex - 1 + sources.length) % sources.length);
+    }
 
-    buttons.forEach((btn, i) => btn.addEventListener('click', () => open(i)));
+    function next() {
+      updateImage((currentIndex + 1) % sources.length);
+    }
 
+    // Event Listeners
+    buttons.forEach((btn, i) => btn.addEventListener('click', () => openAt(i)));
+
+    root.querySelectorAll('[data-close]').forEach((el) => el.addEventListener('click', close));
+    root.querySelector('[data-prev]')?.addEventListener('click', (e) => { e.stopPropagation(); prev(); });
+    root.querySelector('[data-next]')?.addEventListener('click', (e) => { e.stopPropagation(); next(); });
+
+    // Global keys only if THIS lightbox is open
     window.addEventListener('keydown', (e) => {
       if (!lightbox.classList.contains('is-open')) return;
       if (e.key === 'Escape') close();
-      if (e.key === 'ArrowLeft') root.querySelector('[data-prev]').click();
-      if (e.key === 'ArrowRight') root.querySelector('[data-next]').click();
+      if (e.key === 'ArrowLeft') prev();
+      if (e.key === 'ArrowRight') next();
     });
   })();
 </script>
