@@ -1,218 +1,239 @@
 ---
-title: "Cold Blue"
-releaseOrder: 7
-year: 2024
-cover: 'https://cdn.elephant-art-film.com/films/cold-blue/HM_Still_05.webp'
-poster: 'https://cdn.elephant-art-film.com/films/cold-blue/Poster_Hladno_modra_Final.webp'
-thumbnail: 'https://cdn.elephant-art-film.com/films/cold-blue/poster_thumb.webp'
-genre: ['SHORT', 'FICTION']
-runtime: '14 min'
-aspectRatio: '2.39:1'
-color: 'color'
-soundFormat: '5.1'
-watchUrl: 'https://bsf.si/en/movie/hladno-modra/'
-imdbId: 'tt31720052'
-trailer: 'MkiUCKmfvGM'
-stills: ['https://cdn.elephant-art-film.com/films/cold-blue/HM_Still_01.webp','https://cdn.elephant-art-film.com/films/cold-blue/HM_Still_02.webp', 'https://cdn.elephant-art-film.com/films/cold-blue/HM_Still_03.webp','https://cdn.elephant-art-film.com/films/cold-blue/HM_Still_04.webp','https://cdn.elephant-art-film.com/films/cold-blue/HM_Still_05.webp']
-pressPack: 'https://cdn.elephant-art-film.com/films/cold-blue/pr-package.zip'
+interface Props {
+  stills: string[];
+  title?: string;
+  columns?: 2 | 3 | 4;
+}
+
+const { stills, title = 'Still', columns = 3 } = Astro.props;
+
+const colClass =
+  columns === 2
+    ? 'sm:grid-cols-2'
+    : columns === 4
+    ? 'sm:grid-cols-2 lg:grid-cols-4'
+    : 'sm:grid-cols-2 lg:grid-cols-3';
 ---
 
-import YouTube from '../../components/YouTube.astro';
+<div class="stills-gallery" data-gallery>
+  <div class={`stills-grid grid grid-cols-1 ${colClass} gap-2`}>
+    {
+      stills.map((src, index) => (
+        <button
+          type="button"
+          class="still"
+          data-index={index}
+          aria-label={`Open ${title} ${index + 1}`}
+        >
+          <img
+            src={src}
+            loading="lazy"
+            alt={`${title} ${index + 1}`}
+            class="still-img"
+          />
+        </button>
+      ))
+    }
+  </div>
 
-Wanting to move on with his life, Adrian must cut ties with his past.
+  <!-- Lightbox -->
+  <div class="lightbox" data-lightbox aria-hidden="true">
+    <div class="lightbox-backdrop" data-close></div>
 
-## Trailer
+    <div class="lightbox-panel" role="dialog" aria-modal="true" aria-label="Image viewer">
+      <button class="lightbox-close" type="button" data-close aria-label="Close">×</button>
 
-<YouTube id={frontmatter.trailer} class="md:mx-24 xl:mx-12 my-6" />
-
-## Stills
-
-<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
-    {frontmatter.stills.map((still, index) => (
-        <img src={still} alt={`${frontmatter.title} - Still ${index}`} class="!my-0" />
-    ))}
+      <button class="lightbox-nav lightbox-prev" type="button" data-prev aria-label="Previous">‹</button>
+      <figure class="lightbox-figure">
+        <img class="lightbox-img" data-lightbox-img alt="" />
+      </figure>
+      <button class="lightbox-nav lightbox-next" type="button" data-next aria-label="Next">›</button>
+    </div>
+  </div>
 </div>
 
-## Awards
+<style>
+  /* ===== Grid thumbnails ===== */
+  .still {
+    display: block;
+    border: 0;
+    padding: 0;
+    background: transparent;
+    cursor: zoom-in;
+    text-align: left;
+  }
 
-<ul>
-  <li class="award-item">
-    <div class="festival">Top Shorts</div>
-    <div class="award-meta">Best Drama Winner · Best Screenplay Finalist</div>
-  </li>
+  .still-img {
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+    display: block;
+    background: rgba(0,0,0,0.35);
+    transition: transform 180ms ease, opacity 180ms ease;
+    opacity: 0.92;
+  }
 
-  <li class="award-item">
-    <div class="festival">Feel The Reel International Film Festival</div>
-    <div class="award-meta">
-      2nd Best of the Fest Winner · Best Actor Winner · Best Director Nominee · Best Actress Nominee · Best Editing Nominee · Best Cinematography Nominee · Best Original Score Nominee
-    </div>
-  </li>
+  .still:hover .still-img {
+    transform: scale(1.01);
+    opacity: 1;
+  }
 
-  <li class="award-item">
-    <div class="festival">Red Wood Film Festival</div>
-    <div class="award-meta">Best Actor Winner · Best Director Winner · Best Production Design Winner</div>
-  </li>
+  .still:focus-visible {
+    outline: 2px solid rgba(255,255,255,0.25);
+    outline-offset: 4px;
+  }
 
-  <li class="award-item">
-    <div class="festival">Direct Monthly Online Film Festival</div>
-    <div class="award-meta">Best Actor Winner · Best Director Winner</div>
-  </li>
+  /* ===== Lightbox ===== */
+  .lightbox {
+    position: fixed;
+    inset: 0;
+    display: none;
+    z-index: 60;
+  }
 
-  <li class="award-item">
-    <div class="festival">Top Indie Film Awards</div>
-    <div class="award-meta">
-      Best Writing Winner · Best Actress Winner · Best Short Nominee · Best Music Nominee · Best Sound Nominee · Best Cinematography Nominee · Best Director Nominee
-    </div>
-  </li>
+  .lightbox.is-open {
+    display: block;
+  }
 
-  <li class="award-item">
-    <div class="festival">TMFF — The Monthly Film Festival</div>
-    <div class="award-meta">
-      Film of the Month Nominee · Original Score of the Month Winner · Screenwriter of the Month Nominee
-    </div>
-  </li>
+  .lightbox-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.75);
+    backdrop-filter: blur(6px);
+  }
 
-  <li class="award-item">
-    <div class="festival">Festival neodvisnega filma Slovenije</div>
-    <div class="award-meta">Official Selection</div>
-  </li>
+  .lightbox-panel {
+    position: relative;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 56px 1fr 56px;
+    align-items: center;
+    padding: 24px;
+  }
 
-  <li class="award-item">
-    <div class="festival">Festival slovenskega filma</div>
-    <div class="award-meta">Best Short Film Nominee</div>
-  </li>
-</ul>
+  .lightbox-figure {
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 0;
+  }
 
-## Cast and Crew
+  .lightbox-img {
+    max-width: min(1200px, 92vw);
+    max-height: 84vh;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    background: #000;
+    box-shadow: 0 18px 60px rgba(0,0,0,0.6);
+  }
 
-<div class="credits">
-  <div class="credit">
-    <div class="role">Cast</div>
-    <div class="name">Miha Rodman · Živa Selan · Lara Fortuna</div>
-  </div>
+  .lightbox-close {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    width: 42px;
+    height: 42px;
+    border: 0;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.10);
+    color: rgba(255,255,255,0.9);
+    font-size: 26px;
+    line-height: 42px;
+    cursor: pointer;
+    transition: background 160ms ease;
+  }
+  .lightbox-close:hover {
+    background: rgba(255,255,255,0.16);
+  }
 
-  <div class="credit">
-    <div class="role">Writers</div>
-    <div class="name">Lev Mastnak Trobentar · Jan Fabris</div>
-  </div>
+  .lightbox-nav {
+    border: 0;
+    background: transparent;
+    color: rgba(255,255,255,0.85);
+    font-size: 56px;
+    height: 72px;
+    cursor: pointer;
+    opacity: 0.75;
+    transition: opacity 160ms ease;
+  }
+  .lightbox-nav:hover {
+    opacity: 1;
+  }
 
-  <div class="credit">
-    <div class="role">Director</div>
-    <div class="name">Jan Fabris</div>
-  </div>
+  @media (max-width: 640px) {
+    .lightbox-panel {
+      grid-template-columns: 44px 1fr 44px;
+      padding: 16px;
+    }
+    .lightbox-nav { font-size: 44px; }
+    .lightbox-img { max-height: 78vh; }
+  }
+</style>
 
-  <div class="credit">
-    <div class="role">Director of Photography</div>
-    <div class="name">Tristan Dragan</div>
-  </div>
+<script>
+  const root = document.currentScript?.closest('[data-gallery]');
+  if (!root) {};
 
-  <div class="credit">
-    <div class="role">Production Designer</div>
-    <div class="name">Anja Zabavnik</div>
-  </div>
+  const buttons = root?.querySelectorAll('button.still') || [];
+  const lightbox = root?.querySelector('[data-lightbox]');
+  const img = root?.querySelector('[data-lightbox-img]');
 
-  <div class="credit">
-    <div class="role">Costume Designer</div>
-    <div class="name">Barbara Drmota</div>
-  </div>
+  const sources = Array.from(buttons).map((b) => b.querySelector('img')?.getAttribute('src')).filter(Boolean);
 
-  <div class="credit">
-    <div class="role">Music</div>
-    <div class="name">Ruslan Perezhilo</div>
-  </div>
+  let index = 0;
 
-  <div class="credit">
-    <div class="role">Sound Designer</div>
-    <div class="name">Julij Zornik</div>
-  </div>
+  function openAt(i) {
+    index = i;
+    if (!lightbox || !img) return;
 
-  <div class="credit">
-    <div class="role">Assistant Director</div>
-    <div class="name">Gordan Golubović</div>
-  </div>
+    img.src = sources[index];
+    img.alt = `Still ${index + 1}`;
 
-  <div class="credit">
-    <div class="role">Script Supervisor</div>
-    <div class="name">Irena Žugič</div>
-  </div>
+    lightbox.classList.add('is-open');
+    lightbox.setAttribute('aria-hidden', 'false');
+    document.documentElement.style.overflow = 'hidden';
+  }
 
-  <div class="credit">
-    <div class="role">Key Make-up Artist</div>
-    <div class="name">Lea Bole</div>
-  </div>
+  function close() {
+    if (!lightbox || !img) return;
 
-  <div class="credit">
-    <div class="role">Camera Assistant</div>
-    <div class="name">Maja Krvina</div>
-  </div>
+    lightbox.classList.remove('is-open');
+    lightbox.setAttribute('aria-hidden', 'true');
+    document.documentElement.style.overflow = '';
 
-  <div class="credit">
-    <div class="role">Gaffers</div>
-    <div class="name">Neža Jankovič · Matic Menegalija</div>
-  </div>
+    // prevent flash of old image on next open
+    img.src = '';
+    img.alt = '';
+  }
 
-  <div class="credit">
-    <div class="role">Production Sound Mixer</div>
-    <div class="name">Tilen Korbar</div>
-  </div>
+  function prev() {
+    if (!sources.length) return;
+    index = (index - 1 + sources.length) % sources.length;
+    if (img) img.src = sources[index];
+  }
 
-  <div class="credit">
-    <div class="role">Assistant Costume Designer</div>
-    <div class="name">Suzana Samac</div>
-  </div>
+  function next() {
+    if (!sources.length) return;
+    index = (index + 1) % sources.length;
+    if (img) img.src = sources[index];
+  }
 
-  <div class="credit">
-    <div class="role">Assistant Make-up Artist</div>
-    <div class="name">Lucija Krajnik</div>
-  </div>
+  buttons.forEach((btn, i) => {
+    btn.addEventListener('click', () => openAt(i));
+  });
 
-  <div class="credit">
-    <div class="role">Editor</div>
-    <div class="name">Jan Fabris</div>
-  </div>
+  root?.querySelectorAll('[data-close]')?.forEach((el) => el.addEventListener('click', close));
+  root?.querySelector('[data-prev]')?.addEventListener('click', prev);
+  root?.querySelector('[data-next]')?.addEventListener('click', next);
 
-  <div class="credit">
-    <div class="role">Colorist</div>
-    <div class="name">Tristan Dragan</div>
-  </div>
+  window.addEventListener('keydown', (e) => {
+    if (!lightbox?.classList.contains('is-open')) return;
 
-  <div class="credit">
-    <div class="role">Set Photographer</div>
-    <div class="name">Ada Trkulja</div>
-  </div>
-
-  <div class="credit">
-    <div class="role">Foley Artist</div>
-    <div class="name">Jaka Skočir</div>
-  </div>
-
-  <div class="credit">
-    <div class="role">Foley Recordist</div>
-    <div class="name">Žiga Rangus</div>
-  </div>
-
-  <div class="credit">
-    <div class="role">Sound Editor</div>
-    <div class="name">Matic Berus</div>
-  </div>
-
-  <div class="credit">
-    <div class="role">Re-recording Mixer</div>
-    <div class="name">Julij Zornik</div>
-  </div>
-
-  <div class="credit">
-    <div class="role">Sound Post Production</div>
-    <div class="name">001</div>
-  </div>
-
-  <div class="credit">
-    <div class="role">Executive Producers</div>
-    <div class="name">Ada Trkulja · Yun Shen</div>
-  </div>
-
-  <div class="credit">
-    <div class="role">Producer</div>
-    <div class="name">Jan Fabris · ELEPHANT art film production</div>
-  </div>
-</div>
+    if (e.key === 'Escape') close();
+    if (e.key === 'ArrowLeft') prev();
+    if (e.key === 'ArrowRight') next();
+  });
+</script>

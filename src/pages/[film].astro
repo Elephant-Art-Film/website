@@ -4,8 +4,6 @@ import { getCollection, getEntry } from 'astro:content';
 
 import MasterLayout from '../layouts/master.astro';
 import UnorderedList from '../components/UnorderedList.astro';
-import YouTube from '../components/YouTube.astro';
-import StillsGallery from '../components/StillsGallery.astro';
 import iconIMDb from '../icons/imdb.svg?raw';
 import iconWatch from '../icons/watch.svg?raw';
 import iconZip from '../icons/zip.svg?raw';
@@ -81,8 +79,6 @@ const { Content } = await film.render();
     ul: UnorderedList,
     h1: Heading1,
     h2: Heading2,
-    YouTube,
-    StillsGallery,
   }}
 />
 	</article>
