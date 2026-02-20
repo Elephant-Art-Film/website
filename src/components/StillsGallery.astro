@@ -177,70 +177,112 @@ const gid = `gallery-${Math.random().toString(36).slice(2, 6)}`;
 
 <script is:inline>
   (() => {
-    const script = document.currentScript;
-    const gid = script?.closest('.film-gallery')?.dataset.galleryId;
+    const stateByGallery = new WeakMap();
 
-    // Prefer: exact instance by data-gallery-id (works even if DOM shifts)
-    const root =
-      (gid && document.querySelector(`.film-gallery[data-gallery-id="${gid}"]`)) ||
-      script?.closest('.film-gallery');
+    function getGalleryState(root) {
+      let st = stateByGallery.get(root);
+      if (st) return st;
 
-    if (!root) return;
+      const dialog = root.querySelector('.lightbox-root');
+      const mainImg = root.querySelector('.ui-img');
+      const counter = root.querySelector('#curr');
+      const buttons = Array.from(root.querySelectorAll('.still-link'));
+      const sources = buttons
+        .map(b => b.querySelector('img'))
+        .map(img => img?.getAttribute('src') || img?.src)
+        .filter(Boolean);
 
-    const dialog = root.querySelector('.lightbox-root');
-    const mainImg = root.querySelector('.ui-img');
-    const counter = root.querySelector('#curr');
-    const buttons = Array.from(root.querySelectorAll('.still-link'));
-    const sources = buttons.map(b => b.querySelector('img')?.src).filter(Boolean);
+      st = { dialog, mainImg, counter, buttons, sources, currentIndex: 0 };
+      stateByGallery.set(root, st);
+      return st;
+    }
 
-    if (!dialog || !mainImg || !counter || sources.length === 0) return;
+    function openAt(root, index) {
+      const st = getGalleryState(root);
+      if (!st.dialog || !st.mainImg || !st.counter || st.sources.length === 0) return;
 
-    let currentIndex = 0;
+      st.currentIndex = index;
 
-    const updateView = (index) => {
-      currentIndex = index;
-      mainImg.style.opacity = '0';
-      mainImg.src = sources[currentIndex];
-      counter.textContent = String(currentIndex + 1);
-      mainImg.onload = () => (mainImg.style.opacity = '1');
-    };
+      st.mainImg.style.opacity = '0';
+      st.mainImg.src = st.sources[st.currentIndex];
+      st.counter.textContent = String(st.currentIndex + 1);
+      st.mainImg.onload = () => (st.mainImg.style.opacity = '1');
 
-    buttons.forEach((btn, i) => {
-      btn.addEventListener('click', (e) => {
-        e.preventDefault();
-        updateView(i);
+      if (typeof st.dialog.showModal === 'function') {
+        st.dialog.showModal();
+      } else {
+        // fallback for browsers without <dialog>
+        st.dialog.setAttribute('open', '');
+      }
 
-        // guard for browsers without <dialog> support
-        if (typeof dialog.showModal === 'function') {
-          dialog.showModal();
-          document.body.style.overflow = 'hidden';
-        } else {
-          // minimal fallback: make it visible (optional)
-          dialog.setAttribute('open', '');
-          document.body.style.overflow = 'hidden';
-        }
-      });
-    });
+      document.body.style.overflow = 'hidden';
+    }
 
-    // Close should also restore scrolling even on ESC (native dialog close)
-    dialog.addEventListener('close', () => {
+    function close(root) {
+      const st = getGalleryState(root);
+      if (!st.dialog) return;
+
+      if (typeof st.dialog.close === 'function') st.dialog.close();
+      else st.dialog.removeAttribute('open');
+
       document.body.style.overflow = '';
+    }
+
+    function nav(root, dir) {
+      const st = getGalleryState(root);
+      if (!st.dialog || !st.dialog.open || st.sources.length === 0) return;
+
+      st.currentIndex = (st.currentIndex + dir + st.sources.length) % st.sources.length;
+      st.mainImg.style.opacity = '0';
+      st.mainImg.src = st.sources[st.currentIndex];
+      st.counter.textContent = String(st.currentIndex + 1);
+      st.mainImg.onload = () => (st.mainImg.style.opacity = '1');
+    }
+
+    // One click handler for the whole document (works across Astro page swaps)
+    document.addEventListener('click', (e) => {
+      const thumbBtn = e.target.closest('.film-gallery .still-link');
+      if (thumbBtn) {
+        e.preventDefault();
+        const root = thumbBtn.closest('.film-gallery');
+        if (!root) return;
+        const index = Number(thumbBtn.dataset.index || 0);
+        openAt(root, index);
+        return;
+      }
+
+      const root = e.target.closest('.film-gallery');
+      if (!root) return;
+
+      if (e.target.closest('[data-close]')) { close(root); return; }
+      if (e.target.closest('[data-prev]'))  { nav(root, -1); return; }
+      if (e.target.closest('[data-next]'))  { nav(root, +1); return; }
     });
 
-    root.addEventListener('click', (e) => {
-      if (e.target.closest('[data-close]')) dialog.close();
-      if (e.target.closest('[data-prev]')) updateView((currentIndex - 1 + sources.length) % sources.length);
-      if (e.target.closest('[data-next]')) updateView((currentIndex + 1) % sources.length);
+    // backdrop click (only works for real <dialog>)
+    document.addEventListener('click', (e) => {
+      const dialog = e.target;
+      if (dialog?.matches?.('dialog.lightbox-root') && e.target === dialog) {
+        const root = dialog.closest('.film-gallery');
+        if (root) close(root);
+      }
     });
 
-    dialog.addEventListener('click', (e) => {
-      if (e.target === dialog) dialog.close();
-    });
-
+    // ESC / arrows
     window.addEventListener('keydown', (e) => {
-      if (!dialog.open) return;
-      if (e.key === 'ArrowLeft') updateView((currentIndex - 1 + sources.length) % sources.length);
-      if (e.key === 'ArrowRight') updateView((currentIndex + 1) % sources.length);
+      const openDialog = document.querySelector('dialog.lightbox-root[open]');
+      if (!openDialog) return;
+      const root = openDialog.closest('.film-gallery');
+      if (!root) return;
+
+      if (e.key === 'Escape') close(root);
+      if (e.key === 'ArrowLeft') nav(root, -1);
+      if (e.key === 'ArrowRight') nav(root, +1);
     });
+
+    // if user closes via native dialog behavior, restore scroll
+    document.addEventListener('close', (e) => {
+      if (e.target?.matches?.('dialog.lightbox-root')) document.body.style.overflow = '';
+    }, true);
   })();
 </script>
