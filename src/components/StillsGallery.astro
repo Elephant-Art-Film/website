@@ -7,28 +7,31 @@ interface Props {
 
 const { stills, title = 'Still', columns = 3 } = Astro.props;
 
-const colClass =
-  columns === 2
-    ? 'sm:grid-cols-2'
-    : columns === 4
-    ? 'sm:grid-cols-2 lg:grid-cols-4'
-    : 'sm:grid-cols-2 lg:grid-cols-3';
+/** Make a stable unique id so the script can target the right gallery */
+const gid = `gallery-${Math.random().toString(36).slice(2, 10)}`;
+
+const colConfig = {
+  2: 'sm:grid-cols-2',
+  4: 'sm:grid-cols-2 lg:grid-cols-4',
+  3: 'sm:grid-cols-2 lg:grid-cols-3'
+};
+const colClass = colConfig[columns] || colConfig[3];
 ---
 
-<div class="stills-gallery" data-gallery>
-  <div class={`stills-grid grid grid-cols-1 ${colClass} gap-2`}>
+<div class="stills-gallery" data-gallery-id={gid}>
+  <div class={`stills-grid grid grid-cols-1 ${colClass} gap-3`}>
     {
       stills.map((src, index) => (
         <button
           type="button"
           class="still"
           data-index={index}
-          aria-label={`Open ${title} ${index + 1}`}
+          aria-label={`Open ${title} still ${index + 1}`}
         >
           <img
             src={src}
             loading="lazy"
-            alt={`${title} ${index + 1}`}
+            alt={`${title} — Still ${index + 1}`}
             class="still-img"
           />
         </button>
@@ -37,46 +40,44 @@ const colClass =
   </div>
 
   <!-- Lightbox -->
-  <div class="lightbox" data-lightbox aria-hidden="true">
+  <div class="lightbox" aria-hidden="true">
     <div class="lightbox-backdrop" data-close></div>
 
     <div class="lightbox-panel" role="dialog" aria-modal="true" aria-label="Image viewer">
       <button class="lightbox-close" type="button" data-close aria-label="Close">×</button>
 
       <button class="lightbox-nav lightbox-prev" type="button" data-prev aria-label="Previous">‹</button>
+
       <figure class="lightbox-figure">
         <img class="lightbox-img" data-lightbox-img alt="" />
       </figure>
+
       <button class="lightbox-nav lightbox-next" type="button" data-next aria-label="Next">›</button>
     </div>
   </div>
 </div>
 
 <style>
-  /* ===== Grid thumbnails ===== */
+  /* Thumbnails keep original ratio (no crop) */
   .still {
-    display: block;
     border: 0;
     padding: 0;
     background: transparent;
     cursor: zoom-in;
-    text-align: left;
+    display: block;
   }
 
   .still-img {
     width: 100%;
-    height: 100%;
-    aspect-ratio: 16 / 10;
-    object-fit: cover;
+    height: auto;            /* keep original ratio */
     display: block;
-    background: rgba(0,0,0,0.35);
-    transition: transform 180ms ease, opacity 180ms ease;
     opacity: 0.92;
+    transition: opacity 180ms ease, transform 180ms ease;
   }
 
   .still:hover .still-img {
-    transform: scale(1.01);
     opacity: 1;
+    transform: translateY(-1px);
   }
 
   .still:focus-visible {
@@ -84,14 +85,13 @@ const colClass =
     outline-offset: 4px;
   }
 
-  /* ===== Lightbox ===== */
+  /* Lightbox */
   .lightbox {
     position: fixed;
     inset: 0;
     display: none;
-    z-index: 60;
+    z-index: 70;
   }
-
   .lightbox.is-open {
     display: block;
   }
@@ -99,7 +99,7 @@ const colClass =
   .lightbox-backdrop {
     position: absolute;
     inset: 0;
-    background: rgba(0,0,0,0.75);
+    background: rgba(0,0,0,0.78);
     backdrop-filter: blur(6px);
   }
 
@@ -121,8 +121,8 @@ const colClass =
   }
 
   .lightbox-img {
-    max-width: min(1200px, 92vw);
-    max-height: 84vh;
+    max-width: min(1400px, 92vw);
+    max-height: 86vh;
     width: auto;
     height: auto;
     object-fit: contain;
@@ -158,6 +158,7 @@ const colClass =
     cursor: pointer;
     opacity: 0.75;
     transition: opacity 160ms ease;
+    user-select: none;
   }
   .lightbox-nav:hover {
     opacity: 1;
@@ -169,71 +170,57 @@ const colClass =
       padding: 16px;
     }
     .lightbox-nav { font-size: 44px; }
-    .lightbox-img { max-height: 78vh; }
+    .lightbox-img { max-height: 80vh; }
   }
 </style>
 
-<script>
-  const root = document.currentScript?.closest('[data-gallery]');
-  if (!root) {};
+<script is:inline>
+  // Use a self-executing function to avoid global scope pollution
+  (() => {
+    // Find the closest gallery container to this script
+    const root = document.currentScript.closest('.stills-gallery');
+    if (!root) return;
 
-  const buttons = root?.querySelectorAll('button.still') || [];
-  const lightbox = root?.querySelector('[data-lightbox]');
-  const img = root?.querySelector('[data-lightbox-img]');
+    const lightbox = root.querySelector('.lightbox');
+    const img = root.querySelector('[data-lightbox-img]');
+    const buttons = Array.from(root.querySelectorAll('button.still'));
+    const sources = buttons.map(b => b.querySelector('img')?.src).filter(Boolean);
+    
+    let index = 0;
 
-  const sources = Array.from(buttons).map((b) => b.querySelector('img')?.getAttribute('src')).filter(Boolean);
+    const updateImage = (i) => {
+      index = i;
+      img.style.opacity = '0'; // Optional: fade out
+      img.src = sources[index];
+      img.alt = `Still ${index + 1}`;
+      img.onload = () => img.style.opacity = '1'; // Optional: fade in
+    };
 
-  let index = 0;
+    const open = (i) => {
+      updateImage(i);
+      lightbox.classList.add('is-open');
+      document.body.style.overflow = 'hidden';
+    };
 
-  function openAt(i) {
-    index = i;
-    if (!lightbox || !img) return;
+    const close = () => {
+      lightbox.classList.remove('is-open');
+      document.body.style.overflow = '';
+    };
 
-    img.src = sources[index];
-    img.alt = `Still ${index + 1}`;
+    // Event Delegation for Nav
+    root.addEventListener('click', (e) => {
+      if (e.target.closest('[data-close]')) close();
+      if (e.target.closest('[data-prev]')) updateImage((index - 1 + sources.length) % sources.length);
+      if (e.target.closest('[data-next]')) updateImage((index + 1) % sources.length);
+    });
 
-    lightbox.classList.add('is-open');
-    lightbox.setAttribute('aria-hidden', 'false');
-    document.documentElement.style.overflow = 'hidden';
-  }
+    buttons.forEach((btn, i) => btn.addEventListener('click', () => open(i)));
 
-  function close() {
-    if (!lightbox || !img) return;
-
-    lightbox.classList.remove('is-open');
-    lightbox.setAttribute('aria-hidden', 'true');
-    document.documentElement.style.overflow = '';
-
-    // prevent flash of old image on next open
-    img.src = '';
-    img.alt = '';
-  }
-
-  function prev() {
-    if (!sources.length) return;
-    index = (index - 1 + sources.length) % sources.length;
-    if (img) img.src = sources[index];
-  }
-
-  function next() {
-    if (!sources.length) return;
-    index = (index + 1) % sources.length;
-    if (img) img.src = sources[index];
-  }
-
-  buttons.forEach((btn, i) => {
-    btn.addEventListener('click', () => openAt(i));
-  });
-
-  root?.querySelectorAll('[data-close]')?.forEach((el) => el.addEventListener('click', close));
-  root?.querySelector('[data-prev]')?.addEventListener('click', prev);
-  root?.querySelector('[data-next]')?.addEventListener('click', next);
-
-  window.addEventListener('keydown', (e) => {
-    if (!lightbox?.classList.contains('is-open')) return;
-
-    if (e.key === 'Escape') close();
-    if (e.key === 'ArrowLeft') prev();
-    if (e.key === 'ArrowRight') next();
-  });
+    window.addEventListener('keydown', (e) => {
+      if (!lightbox.classList.contains('is-open')) return;
+      if (e.key === 'Escape') close();
+      if (e.key === 'ArrowLeft') root.querySelector('[data-prev]').click();
+      if (e.key === 'ArrowRight') root.querySelector('[data-next]').click();
+    });
+  })();
 </script>
