@@ -34,11 +34,15 @@ const gid = `gallery-${Math.random().toString(36).slice(2, 6)}`;
       <button class="ui-close" data-close aria-label="Close">✕</button>
       
       <div class="ui-main">
-        <button class="ui-nav" data-prev aria-label="Previous">prev</button>
+        <button class="ui-nav ui-prev" data-prev aria-label="Previous image">
+  ‹
+</button>
         <figure class="ui-figure">
           <img class="ui-img" src="" alt="" />
         </figure>
-        <button class="ui-nav" data-next aria-label="Next">next</button>
+        <button class="ui-nav ui-next" data-next aria-label="Next image">
+          ›
+        </button>
       </div>
 
       <div class="ui-footer">
@@ -130,19 +134,30 @@ const gid = `gallery-${Math.random().toString(36).slice(2, 6)}`;
   }
 
   .ui-nav {
-    background: none;
-    border: none;
-    color: rgba(255,255,255,0.3);
-    font-family: serif;
-    font-style: italic;
-    text-transform: uppercase;
-    letter-spacing: 0.2em;
-    cursor: pointer;
-    padding: 2rem;
-    transition: color 0.3s ease;
-  }
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.25);
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  font-weight: 300;
+  cursor: pointer;
+  padding: 2rem;
+  transition: color 0.25s ease, transform 0.25s ease, opacity 0.25s ease;
+  line-height: 1;
+  user-select: none;
+}
 
-  .ui-nav:hover { color: #fff; }
+.ui-nav:hover {
+  color: #fff;
+  transform: scale(1.15);
+}
+
+.ui-prev {
+  text-align: left;
+}
+
+.ui-next {
+  text-align: right;
+}
 
   .ui-close {
     position: absolute;

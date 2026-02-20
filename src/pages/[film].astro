@@ -86,7 +86,9 @@ const { Content } = await film.render();
 	<!-- Section Tabs Navigation (hidden initially, moved into position by JS) -->
 <nav
   id="section-tabs"
-  class="hidden sticky top-0 z-20 -mx-12 px-12 mt-10 mb-6 pt-3 border-b border-white/15"
+  class="hidden sticky top-0 z-30 -mx-12 px-12 mt-10 mb-6 pt-3
+         border-b border-white/15
+         bg-black/90 backdrop-blur supports-[backdrop-filter]:bg-black/60"
 >
   <div class="scrollbar-hide flex items-center gap-10 overflow-x-auto" id="tabs-container"></div>
 </nav>
