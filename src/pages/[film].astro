@@ -86,11 +86,14 @@ const { Content } = await film.render();
 	<!-- Section Tabs Navigation (hidden initially, moved into position by JS) -->
 <nav
   id="section-tabs"
-  class="hidden sticky top-0 z-30 -mx-12 px-12 mt-10 mb-6 pt-3
-         border-b border-white/15
-         bg-black/90 backdrop-blur supports-[backdrop-filter]:bg-black/60"
+  class="hidden sticky top-0 z-30 -mx-12 px-12 mt-10 mb-8"
 >
-  <div class="scrollbar-hide flex items-center gap-10 overflow-x-auto" id="tabs-container"></div>
+  <div class="tabs-surface">
+    <div
+      id="tabs-container"
+      class="scrollbar-hide tabs-row"
+    ></div>
+  </div>
 </nav>
 
 
@@ -105,58 +108,107 @@ const { Content } = await film.render();
     display: none;
   }
 
-  .section-tab {
-    flex: 0 0 auto;
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+/* Tabs surface that matches the page "card" vibe */
+.tabs-surface {
+  position: relative;
+  border-radius: 14px;
 
-    padding: 0.75rem 0;
-    font-size: 1rem;
-    font-weight: 500;
-    letter-spacing: 0.01em;
-    text-transform: none;
-    white-space: nowrap;
+  /* pick a tone that matches your content panel */
+  background: rgba(18, 18, 18, 0.86);
+  backdrop-filter: blur(10px);
 
-    color: rgba(255, 255, 255, 0.45);
-    background: transparent;
-    border: 0;
-    cursor: pointer;
-    transition: color 180ms ease, font-weight 180ms ease;
-  }
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
 
-  .section-tab::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: -1px;
-    height: 2px;
-    background: transparent;
-    border-radius: 999px;
-    transition: background 180ms ease, box-shadow 180ms ease;
-  }
+  /* makes the sticky feel intentional */
+  padding: 6px 6px;
+}
 
-  .section-tab:hover {
-    color: rgba(255, 255, 255, 0.8);
-  }
+/* Horizontal row with comfy padding */
+.tabs-row {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  overflow-x: auto;
+  padding: 8px 14px;
 
-  .section-tab.active {
-    color: rgba(255, 255, 255, 1);
-    font-weight: 600;
-  }
+  /* soft fade at edges (nice for scrollable tabs) */
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0,
+    black 24px,
+    black calc(100% - 24px),
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent 0,
+    black 24px,
+    black calc(100% - 24px),
+    transparent 100%
+  );
+}
 
-  .section-tab.active::after {
-    background: rgba(255, 255, 255, 0.95);
-    box-shadow: 0 0 12px rgba(255, 255, 255, 0.3);
-  }
+/* Tab button */
+.section-tab {
+  flex: 0 0 auto;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 
-  .section-tab:focus-visible {
-    outline: 2px solid rgba(255, 255, 255, 0.25);
-    outline-offset: 4px;
-    border-radius: 4px;
-  }
+  padding: 10px 6px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+
+  color: rgba(255, 255, 255, 0.50);
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+
+  transition: color 160ms ease, transform 160ms ease, background 160ms ease;
+  border-radius: 10px;
+}
+
+.section-tab:hover {
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.section-tab:active {
+  transform: translateY(1px);
+}
+
+/* Active = pill highlight + cleaner indicator */
+.section-tab.active {
+  color: rgba(255, 255, 255, 0.98);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* A subtle bottom indicator inside the pill */
+.section-tab::after {
+  content: "";
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  bottom: 5px;
+  height: 2px;
+  background: transparent;
+  border-radius: 999px;
+  transition: background 160ms ease, opacity 160ms ease;
+  opacity: 0.8;
+}
+
+.section-tab.active::after {
+  background: rgba(255, 255, 255, 0.75);
+}
+
+/* Keyboard focus */
+.section-tab:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.22);
+  outline-offset: 3px;
+}
 
   #film-content h2[id]{
   scroll-margin-top: 90px;
