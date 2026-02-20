@@ -18,7 +18,6 @@ pressPack: 'https://cdn.elephant-art-film.com/films/cold-blue/pr-package.zip'
 ---
 
 import YouTube from '../../components/YouTube.astro';
-import StillsGallery from '../../components/StillsGallery.astro';
 
 Wanting to move on with his life, Adrian must cut ties with his past.
 
@@ -28,7 +27,11 @@ Wanting to move on with his life, Adrian must cut ties with his past.
 
 ## Stills
 
-<StillsGallery stills={frontmatter.stills} title={frontmatter.title} columns={3} />
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+    {frontmatter.stills.map((still, index) => (
+        <img src={still} alt={`${frontmatter.title} - Still ${index}`} class="!my-0" />
+    ))}
+</div>
 
 ## Awards
 
