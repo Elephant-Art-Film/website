@@ -2,9 +2,10 @@
 interface Props {
   location: string;
   datetime: string;
+  program?: string;
 }
 
-const { location, datetime } = Astro.props;
+const { location, datetime, program } = Astro.props;
 ---
 
 <div class="screening-card my-8">
@@ -15,6 +16,7 @@ const { location, datetime } = Astro.props;
   </div>
   <div class="screening-info">
     <div class="screening-label">Upcoming Screening</div>
+    {program && <div class="screening-program">{program}</div>}
     <div class="screening-datetime">{datetime}</div>
     <div class="screening-location">{location}</div>
   </div>
@@ -70,7 +72,15 @@ const { location, datetime } = Astro.props;
   text-transform: uppercase;
   letter-spacing: 0.06em;
   color: rgba(255, 255, 255, 0.50);
+  margin-bottom: 4px;
+}
+
+.screening-program {
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.88);
   margin-bottom: 3px;
+  line-height: 1.4;
 }
 
 .screening-datetime {
