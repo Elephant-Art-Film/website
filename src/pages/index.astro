@@ -13,7 +13,7 @@ const articles = (await getCollection('news')).sort(sortNews).slice(0, 3);
 ---
 
 <MasterLayout title="ELEPHANT art film production" description="" showLogo={true}>
-	<h2 class="text-sm uppercase tracking-widest text-zinc-200 font-medium mb-8">Latest Films</h2>
+	<h2 class="text-base uppercase tracking-widest text-zinc-200 font-medium mb-8">Latest Films</h2>
 
 	<!-- Film Carousel -->
 	<div class="relative group mb-12" id="film-carousel-wrapper">
@@ -63,10 +63,10 @@ const articles = (await getCollection('news')).sort(sortNews).slice(0, 3);
 		</div>
 	</div>
 
-	<h2 class="text-sm uppercase tracking-widest text-zinc-200 font-medium mb-8 mt-16">Showreel 2024</h2>
+	<h2 class="text-base uppercase tracking-widest text-zinc-200 font-medium mb-8 mt-16">Showreel 2024</h2>
 	<YouTube id="PeF7iJxIRJ0" />
 
-	<h2 class="text-sm uppercase tracking-widest text-zinc-200 font-medium mb-8 mt-16">News</h2>
+	<h2 class="text-base uppercase tracking-widest text-zinc-200 font-medium mb-8 mt-16">News</h2>
 	{
 		articles.map((article) => (
 			<NewsCard
@@ -79,7 +79,7 @@ const articles = (await getCollection('news')).sort(sortNews).slice(0, 3);
 		))
 	}
 	<div class="pt-4">
-		<a href="/news" class="text-sm uppercase tracking-widest text-zinc-200 font-medium hover:text-zinc-300 transition-colors duration-200">
+		<a href="/news" class="text-base uppercase tracking-widest text-zinc-200 font-medium hover:text-zinc-300 transition-colors duration-200">
 			All News &rarr;
 		</a>
 	</div>
