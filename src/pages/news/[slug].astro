@@ -23,11 +23,11 @@ const { Content } = await article.render();
 ---
 
 <MasterLayout title={`ELEPHANT | ${article.data.title}`} description={article.data.description || ''}>
-	<img src={article.data.image} alt={article.data.title} class="mb-8" />
-	<h1 class="text-4xl mb-4">{article.data.title}</h1>
-	<time datetime={article.data.publishDate.toISOString()} class="text-lg">
-		{article.data.publishDate.toLocaleDateString('sl-SI')}
+	<img src={article.data.image} alt={article.data.title} class="w-full aspect-video object-cover mb-8" />
+	<time datetime={article.data.publishDate.toISOString()} class="text-xs uppercase tracking-widest text-zinc-400 font-light block mb-4">
+		{article.data.publishDate.toLocaleDateString('en-GB', { day: '2-digit', month: 'long', year: 'numeric' })}
 	</time>
+	<h1 class="text-4xl font-montserrat font-bold mb-6">{article.data.title}</h1>
 	<article class="prose-lg lg:prose-xl my-4">
 		<Content components={{ ul: UnorderedList, a: Link }} />
 	</article>
