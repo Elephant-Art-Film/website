@@ -1,42 +1,61 @@
 ---
-import Link from '../../components/Link.astro';
 import MasterLayout from '../../layouts/master.astro';
+
+const members = [
+	{ name: 'Ada Trkulja',      href: 'https://www.imdb.com/name/nm7663053',  role: 'Director · Screenwriter · Executive Producer' },
+	{ name: 'Gordan Golubović', href: 'https://www.imdb.com/name/nm9083650',  role: 'Executive Producer' },
+	{ name: 'Irena Žugič',      href: 'https://www.imdb.com/name/nm13538884', role: 'Director · Screenwriter' },
+	{ name: 'Jan Fabris',       href: 'https://www.imdb.com/name/nm7782329',  role: 'Director · Screenwriter' },
+	{ name: 'Jana Furman',      href: 'https://www.imdb.com/name/nm18288948', role: 'Production Designer · Graphic Designer' },
+	{ name: 'Ruslan Perezhilo', href: 'https://www.imdb.com/name/nm9902465',  role: 'Composer' },
+	{ name: 'Yun Shen',         href: 'https://www.imdb.com/name/nm14305170', role: 'Executive Producer' },
+];
 ---
 
 <MasterLayout title="ELEPHANT | About Us" description="">
-	<img src="https://cdn.elephant-art-film.com/assets/team_01.webp" alt="Elephants (group)" />
+	<img
+		src="https://cdn.elephant-art-film.com/assets/team_01.webp"
+		alt="ELEPHANT art film — the team"
+		class="w-full object-cover mb-12"
+	/>
 
-	<h1 class="text-4xl font-bold mt-12 mb-6">About Us</h1>
+	<h1 class="text-4xl font-montserrat font-bold mb-6">About Us</h1>
 
-	<p class="text-xl">We are an artistic group making short films.</p>
-	<p class="text-xl">
-		You are welcome to contact us at
-		<a href="mailto:elephantartfilm@gmail.com" class="italic underline hover:text-gray-100">
-			elephantartfilm@gmail.com</a
-		>.
-	</p>
+	<div class="about-body text-lg font-light leading-relaxed text-zinc-300 max-w-2xl space-y-4 mb-10">
+		<p>We are an artistic group making short films.</p>
+		<p>
+			You are welcome to reach us at
+			<a
+				href="mailto:elephantartfilm@gmail.com"
+				class="text-zinc-200 underline underline-offset-4 hover:text-white transition-colors duration-200"
+			>
+				elephantartfilm@gmail.com
+			</a>.
+		</p>
+	</div>
 
-	<ul class="text-xl mt-8">
-		<li class="my-4">
-			<Link href="https://www.imdb.com/name/nm7663053">Ada Trkulja</Link> | Director, Screenwriter, Executive Producer
-		</li>
-		<li class="my-4">
-			<Link href="https://www.imdb.com/name/nm9083650">Gordan Golubović</Link> | Executive Producer
-		</li>
-		<li class="my-4">
-			<Link href="https://www.imdb.com/name/nm13538884">Irena Žugič</Link> | Director, Screenwriter
-		</li>
-		<li class="my-4">
-			<Link href="https://www.imdb.com/name/nm7782329">Jan Fabris</Link> | Director, Screenwriter
-		</li>
-		<li class="my-4">
-			<Link href="https://www.imdb.com/name/nm18288948">Jana Furman</Link> | Production Designer, Graphic Designer
-		</li>
-		<li class="my-4">
-			<Link href="https://www.imdb.com/name/nm9902465">Ruslan Perezhilo</Link> | Composer
-		</li>
-		<li class="my-4">
-			<Link href="https://www.imdb.com/name/nm14305170">Yun Shen</Link> | Executive Producer
-		</li>
-	</ul>
+	<hr class="border-zinc-700 mb-10" />
+
+	<h2 class="text-xs uppercase tracking-widest text-zinc-500 mb-8">The Team</h2>
+
+	<div class="grid grid-cols-1 sm:grid-cols-2 gap-x-12">
+		{members.map((m) => (
+			<div class="border-t border-zinc-700 py-5">
+				<a
+					href={m.href}
+					target="_blank"
+					class="font-montserrat font-semibold text-lg text-zinc-100 hover:text-white transition-colors duration-200"
+				>
+					{m.name}
+				</a>
+				<p class="text-sm text-zinc-500 font-light tracking-wide mt-1">{m.role}</p>
+			</div>
+		))}
+	</div>
 </MasterLayout>
+
+<style is:global>
+	.about-body {
+		font-family: Manrope, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+	}
+</style>
