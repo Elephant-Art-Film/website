@@ -18,11 +18,11 @@ const gid = `gallery-${Math.random().toString(36).slice(2, 6)}`;
           data-index={index}
           aria-label={`Open ${title} ${index + 1}`}
         >
-          <img 
-            src={src} 
-            alt={`${title} ${index + 1}`} 
+          <img
+            src={src}
+            alt={`${title} ${index + 1}`}
             loading="lazy"
-            class="thumbnail-img" 
+            class="thumbnail-img"
           />
         </button>
       ))
@@ -32,17 +32,13 @@ const gid = `gallery-${Math.random().toString(36).slice(2, 6)}`;
   <dialog class="lightbox-root">
     <div class="lightbox-ui">
       <button class="ui-close" data-close aria-label="Close">✕</button>
-      
+
       <div class="ui-main">
-        <button class="ui-nav ui-prev" data-prev aria-label="Previous image">
-  ‹
-</button>
+        <button class="ui-nav ui-prev" data-prev aria-label="Previous image">‹</button>
         <figure class="ui-figure">
           <img class="ui-img" src="" alt="" />
         </figure>
-        <button class="ui-nav ui-next" data-next aria-label="Next image">
-          ›
-        </button>
+        <button class="ui-nav ui-next" data-next aria-label="Next image">›</button>
       </div>
 
       <div class="ui-footer">
@@ -58,7 +54,7 @@ const gid = `gallery-${Math.random().toString(36).slice(2, 6)}`;
     --gap: 16px;
   }
 
-  /* 3-column grid that respects original height/ratio */
+  /* 3-column grid — desktop */
   .grid-container {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -76,7 +72,7 @@ const gid = `gallery-${Math.random().toString(36).slice(2, 6)}`;
 
   .thumbnail-img {
     width: 100%;
-    height: auto; /* Maintains original aspect ratio */
+    height: auto;
     display: block;
     border-radius: 2px;
   }
@@ -86,7 +82,7 @@ const gid = `gallery-${Math.random().toString(36).slice(2, 6)}`;
     transform: translateY(-2px);
   }
 
-  /* Lightbox Styles */
+  /* Lightbox */
   .lightbox-root {
     border: none;
     padding: 0;
@@ -134,30 +130,22 @@ const gid = `gallery-${Math.random().toString(36).slice(2, 6)}`;
   }
 
   .ui-nav {
-  background: none;
-  border: none;
-  color: rgba(255, 255, 255, 0.25);
-  font-size: clamp(2rem, 4vw, 3.5rem);
-  font-weight: 300;
-  cursor: pointer;
-  padding: 2rem;
-  transition: color 0.25s ease, transform 0.25s ease, opacity 0.25s ease;
-  line-height: 1;
-  user-select: none;
-}
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.25);
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    font-weight: 300;
+    cursor: pointer;
+    padding: 2rem;
+    transition: color 0.25s ease, transform 0.25s ease;
+    line-height: 1;
+    user-select: none;
+  }
 
-.ui-nav:hover {
-  color: #fff;
-  transform: scale(1.15);
-}
-
-.ui-prev {
-  text-align: left;
-}
-
-.ui-next {
-  text-align: right;
-}
+  .ui-nav:hover {
+    color: #fff;
+    transform: scale(1.15);
+  }
 
   .ui-close {
     position: absolute;
@@ -184,9 +172,34 @@ const gid = `gallery-${Math.random().toString(36).slice(2, 6)}`;
     .grid-container { grid-template-columns: repeat(2, 1fr); }
   }
 
+  /* Mobile: horizontal scroll carousel */
   @media (max-width: 600px) {
-    .grid-container { grid-template-columns: 1fr; }
-    .ui-nav { display: none; }
+    .grid-container {
+      display: flex;
+      overflow-x: scroll;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      gap: 10px;
+      /* side padding creates a "peek" of adjacent slides */
+      padding: 0 8%;
+    }
+
+    .grid-container::-webkit-scrollbar {
+      display: none;
+    }
+
+    .still-link {
+      flex: 0 0 84%;
+      scroll-snap-align: center;
+      cursor: zoom-in;
+    }
+
+    .thumbnail-img {
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+      border-radius: 4px;
+    }
   }
 </style>
 
@@ -217,7 +230,6 @@ const gid = `gallery-${Math.random().toString(36).slice(2, 6)}`;
       if (!st.dialog || !st.mainImg || !st.counter || st.sources.length === 0) return;
 
       st.currentIndex = index;
-
       st.mainImg.style.opacity = '0';
       st.mainImg.src = st.sources[st.currentIndex];
       st.counter.textContent = String(st.currentIndex + 1);
@@ -226,7 +238,6 @@ const gid = `gallery-${Math.random().toString(36).slice(2, 6)}`;
       if (typeof st.dialog.showModal === 'function') {
         st.dialog.showModal();
       } else {
-        // fallback for browsers without <dialog>
         st.dialog.setAttribute('open', '');
       }
 
@@ -236,17 +247,14 @@ const gid = `gallery-${Math.random().toString(36).slice(2, 6)}`;
     function close(root) {
       const st = getGalleryState(root);
       if (!st.dialog) return;
-
       if (typeof st.dialog.close === 'function') st.dialog.close();
       else st.dialog.removeAttribute('open');
-
       document.body.style.overflow = '';
     }
 
     function nav(root, dir) {
       const st = getGalleryState(root);
       if (!st.dialog || !st.dialog.open || st.sources.length === 0) return;
-
       st.currentIndex = (st.currentIndex + dir + st.sources.length) % st.sources.length;
       st.mainImg.style.opacity = '0';
       st.mainImg.src = st.sources[st.currentIndex];
@@ -254,15 +262,14 @@ const gid = `gallery-${Math.random().toString(36).slice(2, 6)}`;
       st.mainImg.onload = () => (st.mainImg.style.opacity = '1');
     }
 
-    // One click handler for the whole document (works across Astro page swaps)
+    // Click delegation
     document.addEventListener('click', (e) => {
       const thumbBtn = e.target.closest('.film-gallery .still-link');
       if (thumbBtn) {
         e.preventDefault();
         const root = thumbBtn.closest('.film-gallery');
         if (!root) return;
-        const index = Number(thumbBtn.dataset.index || 0);
-        openAt(root, index);
+        openAt(root, Number(thumbBtn.dataset.index || 0));
         return;
       }
 
@@ -274,7 +281,7 @@ const gid = `gallery-${Math.random().toString(36).slice(2, 6)}`;
       if (e.target.closest('[data-next]'))  { nav(root, +1); return; }
     });
 
-    // backdrop click (only works for real <dialog>)
+    // Backdrop click closes lightbox
     document.addEventListener('click', (e) => {
       const dialog = e.target;
       if (dialog?.matches?.('dialog.lightbox-root') && e.target === dialog) {
@@ -283,19 +290,35 @@ const gid = `gallery-${Math.random().toString(36).slice(2, 6)}`;
       }
     });
 
-    // ESC / arrows
+    // Keyboard
     window.addEventListener('keydown', (e) => {
       const openDialog = document.querySelector('dialog.lightbox-root[open]');
       if (!openDialog) return;
       const root = openDialog.closest('.film-gallery');
       if (!root) return;
-
-      if (e.key === 'Escape') close(root);
-      if (e.key === 'ArrowLeft') nav(root, -1);
-      if (e.key === 'ArrowRight') nav(root, +1);
+      if (e.key === 'Escape')      close(root);
+      if (e.key === 'ArrowLeft')   nav(root, -1);
+      if (e.key === 'ArrowRight')  nav(root, +1);
     });
 
-    // if user closes via native dialog behavior, restore scroll
+    // Touch swipe on lightbox
+    let touchStartX = 0;
+    document.addEventListener('touchstart', (e) => {
+      if (e.target.closest('dialog.lightbox-root')) {
+        touchStartX = e.touches[0].clientX;
+      }
+    }, { passive: true });
+
+    document.addEventListener('touchend', (e) => {
+      const dialog = e.target.closest('dialog.lightbox-root');
+      if (!dialog?.open) return;
+      const dx = e.changedTouches[0].clientX - touchStartX;
+      if (Math.abs(dx) < 50) return;
+      const root = dialog.closest('.film-gallery');
+      if (root) nav(root, dx < 0 ? 1 : -1);
+    });
+
+    // Restore scroll on native dialog close
     document.addEventListener('close', (e) => {
       if (e.target?.matches?.('dialog.lightbox-root')) document.body.style.overflow = '';
     }, true);
