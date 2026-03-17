@@ -8,6 +8,6 @@ const films = (await getCollection('films')).sort((a, b) => b.data.releaseOrder 
 ---
 
 <MasterLayout title="ELEPHANT | News" description="">
-	<h1 class="text-4xl font-bold mb-6">Films</h1>
+	<h1 class="text-3xl font-light tracking-widest uppercase text-zinc-100 mb-8">Films</h1>
 	{films.map((film) => <FilmCard slug={film.slug} film={film.data} />)}
 </MasterLayout>
