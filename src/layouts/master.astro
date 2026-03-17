@@ -145,25 +145,23 @@ const currentYear = new Date().getFullYear();
 		</header>
 
 		<div class="flex flex-col h-screen xl:ml-1/4 2xl:ml-1/3">
-			<div class="xl:hidden bg-black">
-				<div
-					id="menu-open"
-					class="xl:hidden fill-gray-300 hover:fill-gray-100 w-6 m-4 cursor-pointer"
-					class:list={{ 'mb-0': showLogo }}
-				>
-					<Fragment set:html={iconBars} />
+			<div class="xl:hidden grid grid-cols-3 items-center px-5 py-3 bg-black border-b border-zinc-800">
+				<div></div>
+				<a href="/" class="flex justify-center">
+					<img
+						src="/assets/brand/elephant-official-square.webp"
+						alt="ELEPHANT art film productions"
+						class="rounded-full w-10 h-10 object-cover"
+					/>
+				</a>
+				<div class="flex justify-end">
+					<div
+						id="menu-open"
+						class="fill-zinc-400 hover:fill-zinc-100 w-5 cursor-pointer transition-colors"
+					>
+						<Fragment set:html={iconBars} />
+					</div>
 				</div>
-				{
-					showLogo && (
-						<a href="https://elephant-art-film.com/">
-							<img
-								src="/assets/brand/elephant-official-square.webp"
-								alt="ELEPHANT art film productions"
-								class="rounded-full w-48 mx-auto"
-							/>
-						</a>
-					)
-				}
 			</div>
 			<main class="m-12 mt-8 xl:mt-16 2xl:mx-48">
 				<slot />
@@ -179,12 +177,10 @@ const currentYear = new Date().getFullYear();
 
 <script>
 	document.getElementById('menu-open')?.addEventListener('click', () => {
-		let menu = document.getElementById('menu');
-		menu?.classList.remove('-translate-x-full');
+		document.getElementById('menu')?.classList.toggle('-translate-x-full');
 	});
 
 	document.getElementById('menu-close')?.addEventListener('click', () => {
-		let menu = document.getElementById('menu');
-		menu?.classList.add('-translate-x-full');
+		document.getElementById('menu')?.classList.add('-translate-x-full');
 	});
 </script>
