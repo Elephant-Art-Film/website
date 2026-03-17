@@ -168,8 +168,10 @@ const currentYear = new Date().getFullYear();
 			<main class="m-12 mt-8 xl:mt-16 2xl:mx-48">
 				<slot />
 			</main>
-			<footer class="text-center font-light pb-8 pt-4 mt-auto">
-				Copyright &copy; 2019&ndash;{currentYear} ELEPHANT art film production
+			<footer class="mt-auto border-t border-zinc-800 py-8 px-6">
+				<p class="text-center text-xs tracking-widest uppercase text-zinc-500">
+					&copy; 2019&ndash;{currentYear} ELEPHANT art film production.<br class="sm:hidden" /><span class="hidden sm:inline">&ensp;</span>All rights reserved.
+				</p>
 			</footer>
 		</div>
 	</body>
