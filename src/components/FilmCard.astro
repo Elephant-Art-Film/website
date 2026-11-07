@@ -1,44 +1,59 @@
+
 ---
 interface Props {
-	slug: string;
-	film: {
-		title: string;
-		year: number;
-		thumbnail: string;
-		genre: string[];
-		runtime: string;
-		aspectRatio: string;
-		color: 'color' | 'black and white';
-		soundFormat: string;
-	};
-	minimal?: boolean;
+  slug: string;
+  film: {
+    title: string;
+    year: number;
+    thumbnail: string;
+    genre: string[];
+    runtime: string;
+    aspectRatio: string;
+    color: 'color' | 'black and white';
+    soundFormat: string;
+  };
+  director?: string;
+  minimal?: boolean;
 }
 
-const { film, slug, minimal } = Astro.props;
+const { film, slug, director, minimal } = Astro.props;
 ---
 
 <article class="pb-4">
-	<a
-		href={`/${slug}`}
-		class={minimal
-			? 'block opacity-85 hover:shadow-xl hover:opacity-100 transition duration-200'
-			: 'flex flex-col sm:flex-row gap-2 sm:gap-4 p-2 hover:bg-zinc-900'}
-	>
-		<img
-			src={film.thumbnail}
-			alt={film.title}
-			class={minimal ? 'w-full object-cover' : 'w-64 mx-auto sm:mx-0 object-cover'}
-		/>
-		{
-			!minimal && (
-				<div class="flex-grow">
-					<h1 class="text-2xl font-montserrat font-bold mt-2 mb-4">{film.title}</h1>
-					<div class="text-md my-1">{film.genre.join(' · ')}</div>
-					<div class="text-md my-1">
-						{film.year} · {film.runtime} · {film.aspectRatio} · {film.color} · {film.soundFormat}
-					</div>
-				</div>
-			)
-		}
-	</a>
+  <a
+    href={`/${slug}`}
+    class={minimal
+      ? 'block opacity-85 hover:shadow-xl hover:opacity-100 transition duration-200'
+      : 'flex flex-col sm:flex-row gap-2 sm:gap-4 p-2 hover:bg-zinc-900'}
+  >
+    <img
+      src={film.thumbnail}
+      alt={film.title}
+      class={minimal ? 'w-full object-cover' : 'w-64 mx-auto sm:mx-0 object-cover'}
+    />
+
+    {
+      !minimal && (
+        <div class="flex-grow">
+          <h1 class="text-2xl font-montserrat font-bold mt-2 mb-2">
+            {film.title}
+          </h1>
+
+          {director && (
+            <div class="text-md text-zinc-400 mb-4">
+              Directed by {director}
+            </div>
+          )}
+
+          <div class="text-md my-1">
+            {film.genre.join(' · ')}
+          </div>
+
+          <div class="text-md my-1">
+            {film.year} · {film.runtime} · {film.aspectRatio} · {film.color} · {film.soundFormat}
+          </div>
+        </div>
+      )
+    }
+  </a>
 </article>
